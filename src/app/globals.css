@@ -1,22 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Lusitana&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+}
+
+.marquee {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee div {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 243, 244, 246;
+  --background-end-rgb: 243, 244, 246;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 243, 244, 246;
+    --background-end-rgb: 243, 244, 246;
   }
 }
 
 body {
+  font-family: "Montserrat", sans-serif;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -29,5 +78,142 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  #menu-desktop {
+    display: none;
+  }
+  #menu-mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  #menu-items {
+    transition: transform 0.3 ease-in-out;
+    transform: translateX(-100%);
+   }
+   #menu-items.show {
+     transform: translateX(0);
+   }
+}
+.menu-item {
+  position: relative;
+  overflow: hidden;  
+}
+.menu-item::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto;
+  width: 5px;
+  height: 5px;
+  
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+.menu-item:hover::before {
+  width: 80%;
+  opacity: 0.5;
+}
+.slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+#menu {
+  font-size: 1.125rem; /* Tailwind's text-lg corresponds to 18px */
+  width: 83.333333%; /* w-5/6 means 5/6 of the container width */
+  height: 100%; /* Full height */
+  display: flex; /* Enables flexbox */
+  flex-direction: row;  
+  justify-content: flex-end;
+  transition: left 0.3s ease;  
+}
+
+.news {
+  background-color: #2C3093;  
+  font-weight: bold;
+}
+.competition {
+  background-color: #EA5661;  
+  font-weight: bold;
+}
+.newsComp {
+  background: linear-gradient(to right, #2C3093 50%, #EA5661 50%);
+}
+
+@keyframes grain {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, -10px);
+  }
+}
+.film-grain {
+  position: relative;
+  overflow: hidden;
+}
+.film-grain::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 20%, transparent 80%);
+  opacity: 0.9;
+  z-index: 1;
+  animation: grain 8s steps(10) infinite;
+}
+
+/* Custom CSS */
+.react-calendar__navigation {
+  color: white; /* Text color */
+  display: flex;
+  justify-content:space-between;
+}
+
+.react-calendar__navigation__arrow {
+  color: white; /* Color for the arrow buttons */
+}
+
+.react-calendar__navigation__label {
+  font-weight: bold; /* Bold text for the month and year label */
+  font-size: 1.2em; /* Larger font size */
+}
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  margin: 1em 0;
+}
+.react-calendar__navigation__arrow {
+  padding: 0 1.5em;
+}
+.react-calendar__tile {
+  padding: 0.4em;
+}
+
+/*
+.text-elements > * {
+  background-color: rgba(0, 0, 0, 0.192);
+  padding: 1em;
+  border-radius: 1em;
+}*/
+
+@media only screen and (max-width: 1024px) {
+  #menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 5em;
+    background-color: black;
+    position: fixed;
+    width: 18rem; /* 96 * 0.25rem = 24rem */
+    height: 100%; /* Full height */    
+    left: -24rem;    
+    top: 0;       
+    z-index: -40;     
   }
 }
