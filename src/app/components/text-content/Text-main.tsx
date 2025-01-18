@@ -67,14 +67,6 @@ export default function TextMain({ calenderItems }: TextMainProps) {
                 Den lilla men varma och hjärtliga skidklubben i Sigtuna kommun.
               </p>
             </div>
-            <Image
-              className="absolute invert"
-              src="/SVGs-krita/mountain.svg"
-              alt="Ski Logo"
-              width={400}
-              height={400}
-            />
-            ;
           </div>
           <div className="w-11/12 h-1 bg-white bg-opacity-20 mx-auto m-0"></div>
           <div className="flex justify-center">
