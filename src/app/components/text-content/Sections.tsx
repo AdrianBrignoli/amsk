@@ -27,7 +27,7 @@ export default function Posts({
   return (
     <section
       key={id}
-      className="flex flex-col bg-black bg-opacity-50 text-white my-2 pl-6 p-4 rounded-2xl relative"
+      className="flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component"
       style={{ borderLeft: `5px solid ${categoryBgColor}` }}
     >
       <p
@@ -35,7 +35,7 @@ export default function Posts({
       >
         {sectionLabel}
       </p>
-      <div className="py-4">
+      <div className="flex flex-col space-y-2 py-4">
         <h3 className="flex align-center">
           <BiText className="mr-4" />
           {title}
@@ -44,7 +44,7 @@ export default function Posts({
           <BiCalendar className="mr-4" />
           {publishDate}
         </h4>
-        <div className="flex align-center">
+        <div className="flex align-center text-gray-400">
           <BiText className="mr-4" />
           {contentRN}
         </div>

@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { PiPerson, PiPhone, PiTextT, PiLink } from 'react-icons/pi';
 import { BiText, BiCalendar } from 'react-icons/bi';
 import Posts from '../components/text-content/Sections';
+import PostsMisc from '../components/text-content/PostsMisc';
+import { createContentfulClient } from '../../../lib/contentful/ContentfulFetching';
 import {
   CompetitionPost,
   NewsPost,
@@ -20,28 +22,12 @@ import {
 
 // CONTENTFUL FNS
 
-import { contentfulData } from '@/app/misc/types';
-
-import { createClient } from 'contentful';
-
-const createContentfulClient = () => {
-  if (
-    process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID === undefined ||
-    process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN === undefined
-  )
-    return;
-  const client = createClient({
-    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
-    accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
-  });
-
-  return client;
-};
-
 export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
   pagePostsToRender,
+  skipVal = 0,
 }: {
   pagePostsToRender: string;
+  skipVal?: number;
 }): Promise<T | undefined> => {
   try {
     const client = createContentfulClient();
@@ -52,6 +38,9 @@ export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
 
     const result = await client.getEntries({
       content_type: pagePostsToRender,
+      limit: 3,
+      skip: skipVal,
+      order: ['-sys.createdAt'],
     });
 
     return getDataStructure(pagePostsToRender, result) as T;
@@ -159,7 +148,7 @@ export const FetchForening = async ({
               width={400}
               height={400}
               alt={altText}
-              className="md:w-1/3 w-4/5 h-auto rounded-3xl mx-auto relative drop-shadow-md"
+              className="md:w-1/3 w-4/5 h-auto rounded-3xl mx-auto relative"
             />
           </div>
         );
@@ -176,7 +165,10 @@ export const FetchForening = async ({
         );
 
         return (
-          <section className="space-y-4 text-elements" key={post.id}>
+          <section
+            className="max-w-[1300px] mx-auto py-8 px-4 space-y-8 text-gray-300 text-elements"
+            key={post.id}
+          >
             {content}
           </section>
         );
@@ -203,26 +195,22 @@ export const FetchKontakt = async ({
         const title = String(item.title);
         const phone = item.phone ? String(item.phone) : '';
 
-        return (
-          <section
-            key={item.id}
-            className="flex flex-col bg-sky-400 bg-opacity-50 text-white space-y-2 pl-6 p-4 border-l-4 border-white rounded-2xl my-4"
-          >
-            <h3 className="flex items-center">
-              <PiPerson className="mr-4" />
-              {title}
-            </h3>
-            {/*fix this sob*/}
-            <h4 className="flex items-center">
-              <PiPhone className="mr-4" />
-              {phone}
-            </h4>
-            <div className="flex items-center">
-              <PiTextT className="mr-4" />
-              {content}
-            </div>
-          </section>
-        );
+        const itemRows = [
+          {
+            icon: <PiPerson className="mr-4" />,
+            content: <p className="text-gray-200">{title}</p>,
+          },
+          {
+            icon: <PiPhone className="mr-4" />,
+            content: <p className="text-gray-400">{phone}</p>,
+          },
+          {
+            icon: <PiTextT className="mr-4" />,
+            content: <p className="text-gray-300">{content}</p>,
+          },
+        ];
+
+        return <PostsMisc itemRows={itemRows} />;
       })}
     </>
   );
@@ -242,24 +230,24 @@ export const FetchLankar = async ({
     <>
       {posts.map((item) => {
         const linkName = String(item.linkName);
-        console.log(item);
         const linkUrl = String(item.linkUrl);
 
-        return (
-          <section
-            key={item.id}
-            className="flex flex-col bg-sky-400 bg-opacity-50 text-white space-y-2 pl-6 p-4 border-l-2 border-white rounded-2xl my-4"
-          >
-            <h3 className="flex items-center">
-              <PiTextT className="mr-4" />
-              {linkName}
-            </h3>
-            <div className="flex items-center">
-              <PiLink className="mr-4" />
-              <Link href={linkUrl}>{linkUrl}</Link>
-            </div>
-          </section>
-        );
+        const itemRows = [
+          {
+            icon: <PiTextT className="mr-4" />,
+            content: <p className="text-gray-200">{linkName}</p>,
+          },
+          {
+            icon: <PiLink className="mr-4" />,
+            content: (
+              <p className="text-gray-400">
+                <Link href={linkUrl}>{linkUrl}</Link>
+              </p>
+            ),
+          },
+        ];
+
+        return <PostsMisc itemRows={itemRows} />;
       })}
     </>
   );
@@ -267,11 +255,13 @@ export const FetchLankar = async ({
 
 export const FetchNewsAndCompetition = async ({
   pagePostsToRender,
+  skipVal = 0,
 }: {
   pagePostsToRender: string;
+  skipVal?: number;
 }) => {
   const posts: NewsPost[] | CompetitionPost[] | undefined =
-    await fetchContentfulPosts({ pagePostsToRender });
+    await fetchContentfulPosts({ pagePostsToRender, skipVal });
   if (!posts) return;
 
   return (

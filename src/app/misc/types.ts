@@ -70,6 +70,11 @@ export type contentfulData = {
   linkUrl: string | null;
 };
 
+export type CalenderProps = {
+  calenderItems: CalenderItems;
+  setPosts: (posts: (NewsPost | CompetitionPost)[]) => void;
+};
+
 export type CalenderItems = {
   competition: CompetitionPost[] | undefined;
   news: NewsPost[] | undefined;

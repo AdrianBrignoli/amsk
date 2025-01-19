@@ -12,15 +12,22 @@ export default function PostPageCont(postPageContProps: PostPageContProps) {
 
   return (
     <section className="flex-1 flex justify-center items-center text-black">
-      <div className="flex flex-col space-y-4 py-16 lg:py-24 px-4 w-full max-w-[1100px]">
+      <div className="flex flex-col space-y-4 w-full">
         <HeaderText hone={hone} htwo={htwo} />
-        <div className="overflow-hidden">
-          <div id="news-posts" className="flex flex-col space-y-4 slide-down">
-            {pagePostsToRender ? (
-              <FetchNewsAndCompetition pagePostsToRender={pagePostsToRender} />
-            ) : (
-              ''
-            )}
+        <div className="max-w-[1300px] mx-auto">
+          <div className="overflow-hidden">
+            <div
+              id="news-posts"
+              className="flex flex-col space-y-4 slide-down mx-auto"
+            >
+              {pagePostsToRender ? (
+                <FetchNewsAndCompetition
+                  pagePostsToRender={pagePostsToRender}
+                />
+              ) : (
+                ''
+              )}
+            </div>
           </div>
         </div>
       </div>

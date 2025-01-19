@@ -1,5 +1,5 @@
 import PostPageCont from '@/app/components/text-content/PostPageCont';
-import Calender from '@/app/components/calender/Calender';
+import LoadMore from '@/app/components/misc/LoadMore';
 
 export default function News() {
   return (
@@ -9,6 +9,8 @@ export default function News() {
         htwo="Här kan du läsa om senaste nytt."
         pagePostsToRender="news"
       />
+
+      <LoadMore />
     </>
   );
 }

@@ -10,6 +10,8 @@ import Calender from '../calender/Calender';
 import { CalenderItems } from '@/app/misc/types';
 import { PostsProps } from '@/app/misc/types';
 import Posts from './Sections';
+import TempelateOne from '../tempelates/TempelateOne';
+import CalenderWithText from '../combined/CalenderWithText';
 import {
   NewsPost,
   CompetitionPost,
@@ -55,43 +57,35 @@ export default function TextMain({ calenderItems }: TextMainProps) {
     <>
       <section
         ref={sectionRef}
-        className="flex-1 flex justify-center items-center lg:bg-black lg:bg-opacity-50 lg:rounded-2xl lg:border-2 border-white border-opacity-50 text-white mt-20 lg:mt-32 mb-16 lg:mx-2"
+        className="flex-1 flex justify-center items-center max-w-[1300px] lg:rounded-2xl text-white mt-20 lg:mt-8 mb-16 mx-auto"
       >
-        <div className="flex flex-col space-y-4 max-w-[1100px]">
-          <div className="px-6">
-            <div className="flex flex-col space-y-4 text-white py-10 border-sky-400 relative overflow-hidden">
-              <p className="text-4xl" ref={headingRef}>
-                Hej och varmt välkommen till Arlanda Märsta SK.
-              </p>
-              <p className="text-2xl" ref={subheadingRef}>
-                Den lilla men varma och hjärtliga skidklubben i Sigtuna kommun.
-              </p>
-            </div>
-          </div>
-          <div className="w-11/12 h-1 bg-white bg-opacity-20 mx-auto m-0"></div>
-          <div className="flex justify-center">
-            <div className="flex flex-col lg:w-8/12 w-full lg:px-8 px-4 py-6">
-              <p className="text-2xl mb-8 text-center">
-                <span className="bg-[#2C3093] p-2">Nyheter</span> /{'  '}
-                <span className="bg-[#EA5661] p-2">Tävlingar</span>
-              </p>
-              <Calender calenderItems={calenderItems} setPosts={setPosts} />
-            </div>
-          </div>
-          <div className="lg:w-8/12 w-full mx-auto lg:px-8 px-4 space-y-4 pb-8">
-            {posts &&
-              posts.map((post) => (
-                <Posts
-                  id={post.id}
-                  title={post.title}
-                  publishDate={post.publishDate}
-                  content={post.content}
-                  postType={post.postType}
-                />
-              ))}
-          </div>
-        </div>
+        <TempelateOne
+          title="Kalender"
+          text="Använd kalendern för att se uppkommande nyheter eller tävlingar.
+                Inlägg om nyheter är färgkodade blå medans inlägg relaterade
+                till uppkommande tävlingar är röda."
+          component={
+            <CalenderWithText
+              calenderItems={calenderItems}
+              setPosts={setPosts}
+            />
+          }
+        />
       </section>
+      <div className="w-full bg-black bg-opacity-30 mx-auto lg:px-8 px-4 space-y-4 pb-8">
+        <div className="max-w-[1300px] mx-auto">
+          {posts &&
+            posts.map((post) => (
+              <Posts
+                id={post.id}
+                title={post.title}
+                publishDate={post.publishDate}
+                content={post.content}
+                postType={post.postType}
+              />
+            ))}
+        </div>
+      </div>
     </>
   );
 }

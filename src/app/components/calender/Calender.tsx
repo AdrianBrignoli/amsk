@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import { sv } from 'date-fns/locale';
-import { CalenderItems, contentfulData } from '@/app/misc/types';
+import { CalenderItems, CalenderProps, contentfulData } from '@/app/misc/types';
 import { NewsCompPost } from '@/app/misc/types';
 import Posts from '../text-content/Sections';
 import { PostsProps } from '@/app/misc/types';
@@ -15,11 +15,6 @@ import {
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-
-type CalenderProps = {
-  calenderItems: CalenderItems;
-  setPosts: (posts: (NewsPost | CompetitionPost)[]) => void;
-};
 
 const Calender: React.FC<CalenderProps> = ({ calenderItems, setPosts }) => {
   const [value, onChange] = useState<Value>(new Date());
@@ -146,7 +141,7 @@ const Calender: React.FC<CalenderProps> = ({ calenderItems, setPosts }) => {
             className = 'newsComp';
           }
 
-          return className || null;
+          return className || 'hover:bg-gray-800';
         }}
         className="w-full h-[22em] bg-black bg-opacity-40 rounded-2xl p-4"
       />

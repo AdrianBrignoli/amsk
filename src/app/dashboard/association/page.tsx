@@ -24,14 +24,13 @@ export default function Association() {
 
   return (
     <>
-      <section className="flex-1 flex justify-center items-center text-white">
-        <div className="flex flex-col space-y-4 lg:mt-8 py-16 lg:py-24 px-4 max-w-[1100px]">
-          <HeaderText
-            hone="Föreningen"
-            htwo="Något för alla, alla åldrar välkomna till oss"
-            content={<FetchForening pagePostsToRender={'contentText'} />}
-          />
-        </div>
+      <section className="flex-1 flex-col justify-center items-center text-white w-full">
+        <HeaderText
+          hone="Föreningen"
+          htwo="Något för alla, alla åldrar välkomna till oss"
+        />
+
+        <FetchForening pagePostsToRender={'contentText'} />
       </section>
     </>
   );
