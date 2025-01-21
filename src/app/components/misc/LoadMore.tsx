@@ -6,8 +6,12 @@ import { useState, useEffect } from 'react';
 import { createContentfulClient } from '../../../../lib/contentful/ContentfulFetching';
 import { fetchContentfulNewsAndCompetition } from '../../../../lib/contentful/ContentfulFetching';
 
-export default function LoadMore() {
-  const [posts, setPosts] = useState<NewsPost[]>([]);
+type LoadMoreProps = {
+  input: 'Nyheter' | 'Tävlingar';
+};
+
+export default function LoadMore({ input }: LoadMoreProps) {
+  const [posts, setPosts] = useState<(NewsPost | CompetitionPost)[]>([]);
   const [loadMore, setLoadMore] = useState<boolean>(false);
   const [postCount, setPostCount] = useState<number>(0);
 
@@ -25,9 +29,12 @@ export default function LoadMore() {
       throw new Error('contentful client could not be created');
     }
 
+    const inputTranslated = input === 'Nyheter' ? 'news' : 'competition';
+
     const contentfulPosts = await fetchContentfulNewsAndCompetition(
       client,
-      postCount
+      postCount,
+      inputTranslated
     );
 
     const newPosts = contentfulPosts.items.map((item: any) => ({
@@ -35,7 +42,8 @@ export default function LoadMore() {
       title: item.fields.title as string | null,
       content: item.fields.content as Document | null,
       publishDate: item.fields.pubslishDate as string | null,
-    })) as NewsPost[] | CompetitionPost[];
+      postType: input,
+    })) as (NewsPost | CompetitionPost)[];
 
     // Append new posts to the existing ones
     setPosts((prevPosts) => [...prevPosts, ...newPosts]);
@@ -51,7 +59,7 @@ export default function LoadMore() {
               title={post.title}
               publishDate={post.publishDate}
               content={post.content}
-              postType="Nyheter"
+              postType={input}
             />
           );
         })}

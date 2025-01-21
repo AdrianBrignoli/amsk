@@ -264,6 +264,10 @@ export const FetchNewsAndCompetition = async ({
     await fetchContentfulPosts({ pagePostsToRender, skipVal });
   if (!posts) return;
 
+  return posts;
+
+  {
+    /*
   return (
     <>
       {posts.map((item) => {
@@ -285,6 +289,8 @@ export const FetchNewsAndCompetition = async ({
           />
         );
       })}
-    </>
+    </>    
   );
+  */
+  }
 };

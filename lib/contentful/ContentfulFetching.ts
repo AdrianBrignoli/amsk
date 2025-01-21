@@ -19,12 +19,14 @@ export const createContentfulClient = () => {
 
 export const fetchContentfulNewsAndCompetition = async (
   client: ContentfulClientApi<undefined>,
-
-  skipNum: number
+  skipNum: number,
+  type?: 'news' | 'competition',
+  searchTerm?: string
 ): Promise<EntryCollection<EntrySkeletonType, undefined, string>> => {
   return await client.getEntries({
-    content_type: 'news',
+    content_type: type,
     limit: 3,
+    query: searchTerm,
     skip: skipNum,
     order: ['-sys.createdAt'],
   });
