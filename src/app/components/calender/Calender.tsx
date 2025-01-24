@@ -1,20 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import { sv } from 'date-fns/locale';
-import { CalenderItems, CalenderProps, contentfulData } from '@/app/misc/types';
-import { NewsCompPost } from '@/app/misc/types';
-import Posts from '../text-content/Sections';
-import { PostsProps } from '@/app/misc/types';
-import {
-  NewsPost,
-  CompetitionPost,
-  ExtendedCompetitionPost,
-  ExtendedNewsPost,
-} from '@/app/misc/types';
-
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import { CalenderProps } from '@/app/misc/types';
+import { fetchCalenderPosts } from '../../../../lib/contentful/queries/fetchCalenderPosts';
+import { NewsPost, CompetitionPost } from '@/app/misc/types';
+import { ValuePiece, Value } from '@/app/misc/types';
 
 const Calender: React.FC<CalenderProps> = ({ calenderItems, setPosts }) => {
   const [value, onChange] = useState<Value>(new Date());
@@ -43,6 +33,9 @@ const Calender: React.FC<CalenderProps> = ({ calenderItems, setPosts }) => {
 
   const handleDateClick = (date: ValuePiece) => {
     if (date === null) return;
+
+    const formattedDate = date.toISOString().split('T')[0];
+    const data = fetchCalenderPosts({ publishDate: formattedDate });
 
     const compareDates = (postsDate: Date[], dateCalender: ValuePiece) => {
       const dateString = date.toISOString().split('T')[0];
@@ -78,8 +71,7 @@ const Calender: React.FC<CalenderProps> = ({ calenderItems, setPosts }) => {
 
       postsFiltered = postsFiltered.concat(newsFilteredPosts);
     }
-    // Wtf? Why does this logic need to be different ..?
-    // They do actually have different date formats(comp & news)
+
     if (isCompHighlighted) {
       if (calenderItems.competition === undefined) return;
 

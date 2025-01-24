@@ -13,6 +13,7 @@
     "contentful": "^10.11.5",
     "contentful-management": "^11.26.2",
     "date-fns": "^4.1.0",
+    "graphql-request": "^7.1.2",
     "gsap": "^3.12.5",
     "next": "14.2.3",
     "react": "^18",

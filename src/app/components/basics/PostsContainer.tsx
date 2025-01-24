@@ -1,5 +1,7 @@
 import Posts from '../text-content/Sections';
 import { NewsPost, CompetitionPost } from '@/app/misc/types';
+import { useEffect, useState } from 'react';
+import PostsSkeleton from '../skeleton/PostsSkeleton';
 
 type PostsContainerProps = {
   posts: (NewsPost | CompetitionPost)[];
@@ -7,19 +9,34 @@ type PostsContainerProps = {
 };
 
 export default function PostsContainer({ posts, input }: PostsContainerProps) {
+  const [isPostsEmpty, setIsPostsEmpty] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!initialPosts) {
+      setIsPostsEmpty(true);
+    } else {
+      setPosts(initialPosts);
+    }
+  }, []);
+
   return (
-    <section className="flex flex-col space-y-4 w-full max-w-[1300px] mt-2 mx-auto">
-      {posts.map((post) => {
-        return (
-          <Posts
-            id={post.id}
-            title={post.title}
-            publishDate={post.publishDate}
-            content={post.content}
-            postType={input}
-          />
-        );
-      })}
+    <section>
+      {posts.length === 0
+        ? Array(3)
+            .fill(0)
+            .map((_, index) => <PostsSkeleton key={index} />)
+        : posts?.map((post) => {
+            return (
+              <Posts
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                publishDate={post.publishDate}
+                content={post.content}
+                postType="Nyheter"
+              />
+            );
+          })}
     </section>
   );
 }

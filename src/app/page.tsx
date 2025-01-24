@@ -7,26 +7,30 @@ import HeaderText from './components/text-content/HeaderText';
 export default async function Home(props: any) {
   const competition: CompetitionPost[] | undefined = await fetchContentfulPosts(
     {
-      pagePostsToRender: 'competition',
+      contentType: 'competition',
     }
   );
+
   const news: NewsPost[] | undefined = await fetchContentfulPosts({
-    pagePostsToRender: 'news',
+    contentType: 'news',
   });
+
   const calenderItems: CalenderItems = {
     competition: competition,
     news: news,
   };
 
   return (
-    <section className="flex-1 flex justify-center items-center">
-      <div className="flex flex-col w-full">
-        <HeaderText
-          hone="Hej och varmt välkommen till Arlanda Märsta SK."
-          htwo="Den lilla men varma och hjärtliga skidklubben i Sigtuna kommun."
-        />
-        <TextMain calenderItems={calenderItems} />
-      </div>
-    </section>
+    <>
+      <HeaderText
+        hone="Hej och varmt välkommen till Arlanda Märsta SK."
+        htwo="Den lilla men varma och hjärtliga skidklubben i Sigtuna kommun."
+      />
+      <section className="flex-1 flex justify-center items-center">
+        <div className="flex flex-col w-full">
+          <TextMain calenderItems={calenderItems} />
+        </div>
+      </section>
+    </>
   );
 }

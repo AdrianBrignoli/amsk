@@ -3,8 +3,19 @@ import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { fetchContentfulNewsAndCompetition } from '../../../../lib/contentful/ContentfulFetching';
 import { createContentfulClient } from '../../../../lib/contentful/ContentfulFetching';
+import { CompetitionPost, NewsPost } from '@/app/misc/types';
 
-export default function FilterOnName() {
+type FilterOnNameProps = {
+  setPosts: React.Dispatch<
+    React.SetStateAction<(CompetitionPost | NewsPost)[] | []>
+  >;
+  postType: 'Nyheter' | 'Tävlingar';
+};
+
+export default function FilterOnName({
+  setPosts,
+  postType,
+}: FilterOnNameProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const searchTermHandler = (e: any) => {
@@ -12,19 +23,22 @@ export default function FilterOnName() {
     console.log(searchTerm);
   };
 
-  const search = () => {
+  const search = async () => {
+    const postTypeTrans = postType === 'Nyheter' ? 'news' : 'competition';
+
     const client = createContentfulClient();
 
     if (!client) return;
 
-    const rslt = fetchContentfulNewsAndCompetition(
+    const rslt = await fetchContentfulNewsAndCompetition(
       client,
       0,
-      'news',
+      postTypeTrans,
       searchTerm
     );
 
     console.log(rslt);
+    setPosts(rslt);
   };
 
   return (

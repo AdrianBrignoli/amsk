@@ -1,23 +1,12 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { Document } from '@contentful/rich-text-types';
+import { useState, useRef } from 'react';
 import { ReactNode } from 'react';
 import { gsap } from 'gsap';
-import { Parallax } from 'react-scroll-parallax';
-import Image from 'next/image';
-import Calender from '../calender/Calender';
 import { CalenderItems } from '@/app/misc/types';
-import { PostsProps } from '@/app/misc/types';
 import Posts from './Sections';
 import TempelateOne from '../tempelates/TempelateOne';
 import CalenderWithText from '../combined/CalenderWithText';
-import {
-  NewsPost,
-  CompetitionPost,
-  ExtendedCompetitionPost,
-  ExtendedNewsPost,
-} from '@/app/misc/types';
+import { NewsPost, CompetitionPost } from '@/app/misc/types';
 
 type TextMainProps = {
   calenderItems: CalenderItems;
@@ -72,10 +61,11 @@ export default function TextMain({ calenderItems }: TextMainProps) {
           }
         />
       </section>
-      <div className="w-full bg-black bg-opacity-30 mx-auto lg:px-8 px-4 space-y-4 pb-8">
-        <div className="max-w-[1300px] mx-auto">
-          {posts &&
-            posts.map((post) => (
+      {posts !== undefined && posts?.length > 0 && (
+        <div className="w-full  bg-black bg-opacity-30 lg:px-8 px-4 space-y-4 pb-8 slide-down">
+          <h3 className="text-2xl text-center text-gray-400 py-10">Inlägg</h3>
+          <div className="max-w-[1300px] mx-auto">
+            {posts.map((post) => (
               <Posts
                 id={post.id}
                 title={post.title}
@@ -84,8 +74,9 @@ export default function TextMain({ calenderItems }: TextMainProps) {
                 postType={post.postType}
               />
             ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

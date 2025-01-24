@@ -3,7 +3,6 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { PostType, NewsPost, CompetitionPost } from '@/app/misc/types';
 
 export default function Posts({
-  id,
   title,
   publishDate,
   content,
@@ -26,7 +25,6 @@ export default function Posts({
 
   return (
     <section
-      key={id}
       className="flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component"
       style={{ borderLeft: `5px solid ${categoryBgColor}` }}
     >

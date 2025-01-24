@@ -1,6 +1,5 @@
 import { Document } from '@contentful/rich-text-types';
 import { ReactNode } from 'react';
-import NewsPosts from '../components/contentful/fetchContentfulContent';
 
 // ------------- return types from contentful
 
@@ -22,15 +21,15 @@ export type NewsPost = {
 
 export type LinkPost = {
   id: string;
-  linkName: string | null;
-  linkUrl: string | null;
+  linkName: string;
+  linkUrl: string;
 };
 
 export type ContactPost = {
   id: string;
   title: string | null;
   phone: string | null;
-  content: Document | null;
+  text: Document | null;
 };
 
 export type ArrangemangPost = {
@@ -43,7 +42,7 @@ export type TraningsverksamhetPost = {
   content: Document | null;
 };
 
-export type ContentTextPost = {
+export type AssociationPost = {
   id: string;
   content: Document | null;
 };
@@ -56,7 +55,7 @@ export type GetDataStructureReturn =
   | ContactPost[]
   | ArrangemangPost[]
   | TraningsverksamhetPost[]
-  | ContentTextPost[];
+  | AssociationPost[];
 
 // ------------- End
 
@@ -96,3 +95,6 @@ export type PostsProps = {
 
 export type ExtendedNewsPost = NewsPost & { postType: string };
 export type ExtendedCompetitionPost = CompetitionPost & { postType: string };
+
+export type ValuePiece = Date | null;
+export type Value = ValuePiece | [ValuePiece, ValuePiece];

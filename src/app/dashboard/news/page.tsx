@@ -1,24 +1,28 @@
-import PostPageCont from '@/app/components/text-content/PostPageCont';
-import LoadMore from '@/app/components/misc/LoadMore';
-import FilterOnName from '@/app/components/basics/FilterOnName';
-import { FetchNewsAndCompetition } from '@/app/actions/actions';
 import HeaderText from '@/app/components/text-content/HeaderText';
-import PostsContainer from '@/app/components/basics/PostsContainer';
 import PostFetchingAndRender from '@/app/components/combined/PostFetchingAndRender';
+import { Suspense } from 'react';
+import PostsSkeleton from '@/app/components/skeleton/PostsSkeleton';
+import { fetchContentfulPosts } from '@/app/actions/actions';
+import { NewsPost } from '@/app/misc/types';
 
-export default function News() {
-  const intialPosts = await FetchNewsAndCompetition({
-    pagePostsToRender: 'news',
+export default async function News() {
+  const initialPosts: NewsPost[] | undefined = await fetchContentfulPosts({
+    contentType: 'news',
+    limit: 3,
+    skip: 0,
   });
+
+  const initialPostsPopulated = initialPosts ? initialPosts : [];
 
   return (
     <>
       <HeaderText hone="Nyheter" htwo="Här kan du läsa om senaste nytt." />
-      <div className="w-full max-w-[1300px] mx-auto">
-        <PostFetchingAndRender initialPosts={intialPosts} />
-        {/*<FetchNewsAndCompetition pagePostsToRender="news" />*/}
-        {/*<PostsContainer />*/}
-        <LoadMore input="Nyheter" />
+      <div className="flex-1 flex flex-col w-full max-w-[1300px] mx-auto">
+        {/*We need Suspense as a Resolver here, client side resolving of Promises is tricky apparently*/}
+        <PostFetchingAndRender
+          initialPosts={initialPostsPopulated}
+          postType="Nyheter"
+        />
       </div>
     </>
   );
