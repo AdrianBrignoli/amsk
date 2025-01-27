@@ -1,18 +1,9 @@
 'use server';
-import { Document } from '@contentful/rich-text-types';
 import { createContentfulClient } from '../../../lib/contentful/ContentfulFetching';
 import { OrderFilterPaths, EntrySys } from 'contentful';
 import { createGraphQLClient } from '../../../lib/contentful/ContentfulFetching';
-import {
-  CompetitionPost,
-  NewsPost,
-  LinkPost,
-  ContactPost,
-  ArrangemangPost,
-  TraningsverksamhetPost,
-  AssociationPost,
-  GetDataStructureReturn,
-} from '@/app/misc/types';
+import { getDataStructure } from '../utilityFn/GetDataStructure';
+import { GetDataStructureReturn } from '@/app/misc/types';
 
 // CONTENTFUL FNS
 
@@ -25,7 +16,6 @@ type contenfulFilterProps = {
     | 'sys.contentType.sys.id'
     | '-sys.contentType.sys.id'
   )[];
-  publishDate?: string;
 };
 
 export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
@@ -33,7 +23,6 @@ export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
   limit,
   skip,
   order,
-  publishDate,
 }: contenfulFilterProps): Promise<T | undefined> => {
   try {
     const client = createContentfulClient();
@@ -47,7 +36,6 @@ export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
       limit: limit,
       skip: skip,
       order: order,
-      'fields.publishDate': publishDate,
     });
 
     return getDataStructure(contentType, result) as T;
@@ -57,77 +45,24 @@ export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
   }
 };
 
-/*
-export const fetchContentfulPostsGraphQL = async <
-  T extends GetDataStructureReturn
->({
-  query
-  variables
-}: {
-  query: string
-  variables?
-}): Promise<T | undefined> => {
+import { queryGetPostsByMonth } from '../../../lib/contentful/queries/queries';
+import { restructGraphQLData, getStartEndDate } from '../utilityFn/tinyUtils';
+export const fetchCalenderPosts = async (date: Date) => {
+  const query = queryGetPostsByMonth();
+  const variables = getStartEndDate(date);
+
+  const client = createGraphQLClient();
+
   try {
-    const client = createGraphQLClient();    
+    const data: any = await client.request(query, variables);
+    const { newsPostData, competitionPostData } = restructGraphQLData(data);
 
-    const result = await client.request(query, );
-
-    //const y = getDataStructure(contentType, result) as T;
-    //console.log(y);
-    //return y
-  } catch (error) {
-    console.error('Failed to fetch data from Contentful via GraphQL', error);
-    return undefined;
-  }
-};
-*/
-export const getDataStructure = (
-  mode: string,
-  result: any
-): GetDataStructureReturn => {
-  switch (mode) {
-    case 'competition':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        title: item.fields.title as string | null,
-        content: item.fields.content as Document | null,
-        publishDate: item.fields.publishDate as string | null,
-      })) as CompetitionPost[];
-    case 'news':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        title: item.fields.title as string | null,
-        content: item.fields.content as Document | null,
-        publishDate: item.fields.publishDate as string | null,
-      })) as NewsPost[];
-    case 'lankar':
-      return result.items.map((item: any) => ({
-        linkName: item.fields.linkName as string | null,
-        linkUrl: item.fields.linkUrl as string | null,
-      })) as LinkPost[];
-    case 'contact':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        title: item.fields.title as string | null,
-        phone: item.fields.phone as string | null,
-        content: item.fields.content as Document | null,
-      })) as ContactPost[];
-    case 'arrangemang':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        content: item.fields.content as Document | null,
-      })) as ArrangemangPost[];
-    case 'traningsverksamhet':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        content: item.fields.content as Document | null,
-      })) as TraningsverksamhetPost[];
-    case 'contentText':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        content: item.fields.content as Document | null,
-      })) as AssociationPost[];
-    default:
-      return [];
+    return {
+      newsPostData: newsPostData,
+      competitionPostData: competitionPostData,
+    };
+  } catch (e) {
+    console.log('Issue fetching calenderposts per month');
+    throw new Error('Issue fetching calenderposts per month');
   }
 };

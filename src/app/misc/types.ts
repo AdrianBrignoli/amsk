@@ -7,7 +7,7 @@ export type CompetitionPost = {
   id: string;
   title: string | null;
   content: Document | null;
-  publishDate: string | null;
+  publishDate: string;
   postType: 'Tävlingar';
 };
 
@@ -15,7 +15,7 @@ export type NewsPost = {
   id: string;
   title: string | null;
   content: Document | null;
-  publishDate: string | null;
+  publishDate: string;
   postType: 'Nyheter';
 };
 
@@ -70,13 +70,12 @@ export type contentfulData = {
 };
 
 export type CalenderProps = {
-  calenderItems: CalenderItems;
   setPosts: (posts: (NewsPost | CompetitionPost)[]) => void;
 };
 
 export type CalenderItems = {
-  competition: CompetitionPost[] | undefined;
-  news: NewsPost[] | undefined;
+  competition: CompetitionPost[] | [];
+  news: NewsPost[] | [];
 };
 
 export type NewsCompPost = {
@@ -84,6 +83,11 @@ export type NewsCompPost = {
   title: string | null;
   publishDate: string | null;
   content: ReactNode | null;
+};
+
+export type CalenderData = {
+  newsCollection: NewsPost[];
+  competitionCollection: CompetitionPost[];
 };
 
 export type PostType = 'Nyheter' | 'Tävlingar';

@@ -1,10 +1,7 @@
 import { createClient } from 'contentful';
 import { ContentfulClientApi } from 'contentful';
-import { EntryCollection } from 'contentful';
-import { EntrySkeletonType } from 'contentful';
 import { CompetitionPost, NewsPost } from '@/app/misc/types';
-import { GraphQLClient, gql } from 'graphql-request';
-import { OrderFilterPaths, EntrySys } from 'contentful';
+import { GraphQLClient } from 'graphql-request';
 
 export const createContentfulClient = () => {
   if (
@@ -20,7 +17,7 @@ export const createContentfulClient = () => {
   return client;
 };
 
-import { getDataStructure } from '@/app/actions/actions';
+import { getDataStructure } from '@/app/utilityFn/GetDataStructure';
 import { GetDataStructureReturn } from '@/app/misc/types';
 export const fetchContentfulNewsAndCompetition = async <
   T extends GetDataStructureReturn

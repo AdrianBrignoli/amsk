@@ -1,21 +1,14 @@
 'use client';
-import { useState, useRef } from 'react';
-import { ReactNode } from 'react';
-import { gsap } from 'gsap';
-import { CalenderItems } from '@/app/misc/types';
+import { useState } from 'react';
 import Posts from './Sections';
 import TempelateOne from '../tempelates/TempelateOne';
 import CalenderWithText from '../combined/CalenderWithText';
 import { NewsPost, CompetitionPost } from '@/app/misc/types';
 
-type TextMainProps = {
-  calenderItems: CalenderItems;
-};
-
-export default function TextMain({ calenderItems }: TextMainProps) {
-  const [description, setDescription] = useState<ReactNode | null>(null);
+export default function TextMain() {
   const [posts, setPosts] = useState<(NewsPost | CompetitionPost)[]>();
 
+  /*
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subheadingRef = useRef<HTMLHeadingElement>(null);
@@ -41,11 +34,12 @@ export default function TextMain({ calenderItems }: TextMainProps) {
     { opacity: 0, y: 50 },
     { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.6 }
   );
+  */
 
   return (
     <>
       <section
-        ref={sectionRef}
+        //ref={sectionRef}
         className="flex-1 flex justify-center items-center max-w-[1300px] lg:rounded-2xl text-white mt-20 lg:mt-8 mb-16 mx-auto"
       >
         <TempelateOne
@@ -53,12 +47,7 @@ export default function TextMain({ calenderItems }: TextMainProps) {
           text="Använd kalendern för att se uppkommande nyheter eller tävlingar.
                 Inlägg om nyheter är färgkodade blå medans inlägg relaterade
                 till uppkommande tävlingar är röda."
-          component={
-            <CalenderWithText
-              calenderItems={calenderItems}
-              setPosts={setPosts}
-            />
-          }
+          component={<CalenderWithText setPosts={setPosts} />}
         />
       </section>
       {posts !== undefined && posts?.length > 0 && (
@@ -67,6 +56,7 @@ export default function TextMain({ calenderItems }: TextMainProps) {
           <div className="max-w-[1300px] mx-auto">
             {posts.map((post) => (
               <Posts
+                key={post.id}
                 id={post.id}
                 title={post.title}
                 publishDate={post.publishDate}

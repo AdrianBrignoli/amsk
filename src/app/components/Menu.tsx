@@ -76,6 +76,7 @@ export default function menu() {
   return (
     <>
       <div
+        onClick={() => setIsMenuOpen(false)}
         className={`absolute w-full h-full bg-black bg-opacity-50 z-10 transition-opacity duration-300 ease-in-out ${
           isMenuOpen && isMobileStyling
             ? 'opacity-100 pointer-events-auto'
@@ -109,7 +110,7 @@ export default function menu() {
         <img
           src="/menu-icon.svg"
           alt="mountain"
-          className="block lg:hidden absolute right-0 top-2 h-16 w-16 z-10 mr-2"
+          className="block lg:hidden absolute right-0 top-4 h-12 w-12 z-10 mr-4"
           onClick={() => setIsMenuOpen((prev) => !prev)}
         />
 

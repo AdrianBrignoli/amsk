@@ -1,8 +1,10 @@
 import { BiText, BiCalendar } from 'react-icons/bi';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { PostType, NewsPost, CompetitionPost } from '@/app/misc/types';
+import { getRelevantDate } from '@/app/utilityFn/tinyUtils';
 
 export default function Posts({
+  id,
   title,
   publishDate,
   content,
@@ -14,15 +16,17 @@ export default function Posts({
 
   let categoryBgColor = '';
   let sectionLabel = '';
-  console.log(postType);
-  if (postType !== null && postType === 'Nyheter') {
+
+  console.log('POSTTYPE', postType);
+
+  if (postType === 'Nyheter') {
     categoryBgColor = '#2C3093';
     sectionLabel = 'Nyhet';
   } else {
     categoryBgColor = '#EA5661';
     sectionLabel = 'Tävling';
   }
-
+  console.log('css', publishDate);
   return (
     <section
       className="flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component"
