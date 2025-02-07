@@ -14,13 +14,15 @@ export default async function Contact() {
     <section className="flex-1 flex flex-col text-white w-full">
       <HeaderText hone="Kontakt" htwo="Här kan du hitta kontaktuppgifter" />
       {data ? (
-        <TempelateOne
-          title="Kontaktuppgifter"
-          text="Här ser du kontaktuppgifter till olika personer som du kan kontakta
+        <>
+          <TempelateOne
+            title="Kontaktuppgifter"
+            text="Här ser du kontaktuppgifter till olika personer som du kan kontakta
                   om du har frågor eller liknande. Vi hjälper gärna till med att få
                   ordning på förvirringen."
-          component={<ContactCont posts={data} />}
-        />
+            component={<ContactCont posts={data} />}
+          />
+        </>
       ) : (
         <NoData />
       )}
