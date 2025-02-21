@@ -2,11 +2,8 @@ import type { Metadata } from 'next';
 import { Roboto_Condensed } from 'next/font/google';
 import './globals.css';
 import Menu from './components/Menu';
-import Banner from './components/Banner';
-import Hero from './components/Hero';
 import Footer from './components/Footer';
 import { Providers } from './components/Providers';
-import Image from 'next/image';
 import './globals.css';
 import { ErrorBoundary } from './components/error-bondaries/ErrorBoundary';
 
