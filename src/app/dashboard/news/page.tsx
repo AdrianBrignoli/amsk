@@ -5,25 +5,35 @@ import PostsSkeleton from '@/app/components/skeleton/PostsSkeleton';
 import { fetchContentfulPosts } from '@/app/actions/actions';
 import { NewsPost } from '@/app/misc/types';
 
-export default async function News() {
-  const initialPosts: NewsPost[] | undefined = await fetchContentfulPosts({
+export default function News() {
+  return (
+    <>
+      <HeaderText hone="Nyheter" htwo="Här kan du läsa om senaste nytt." />
+      <div className="flex-1 flex flex-col w-full max-w-[1300px] mx-auto">
+        <Suspense fallback={<PostsSkeleton />}>
+          <NewsPosts />
+        </Suspense>
+      </div>
+    </>
+  );
+}
+
+// Separate async component for posts
+async function NewsPosts() {
+  const result = await fetchContentfulPosts({
     contentType: 'news',
     limit: 3,
     skip: 0,
   });
 
-  const initialPostsPopulated = initialPosts ? initialPosts : [];
+  const initialPostsPopulated = result.items
+    ? (result.items as NewsPost[])
+    : [];
 
   return (
-    <>
-      <HeaderText hone="Nyheter" htwo="Här kan du läsa om senaste nytt." />
-      <div className="flex-1 flex flex-col w-full max-w-[1300px] mx-auto">
-        {/*We need Suspense as a Resolver here, client side resolving of Promises is tricky apparently*/}
-        <PostFetchingAndRender
-          initialPosts={initialPostsPopulated}
-          postType="Nyheter"
-        />
-      </div>
-    </>
+    <PostFetchingAndRender
+      initialPosts={initialPostsPopulated}
+      postType="Nyheter"
+    />
   );
 }

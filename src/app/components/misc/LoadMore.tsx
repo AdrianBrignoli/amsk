@@ -1,6 +1,7 @@
 'use client';
 import { CompetitionPost, NewsPost } from '@/app/misc/types';
-import FetchMorePosts from '@/app/utilityFn/FetchMorePosts';
+import { useState } from 'react';
+import { fetchContentfulPosts } from '@/app/actions/actions';
 
 type LoadMoreProps = {
   setPosts: React.Dispatch<
@@ -17,29 +18,41 @@ export default function LoadMore({
   posts,
   setIsLoadingMore,
 }: LoadMoreProps) {
-  const fetchContentfulHandler = async () => {
-    setIsLoadingMore(true);
-    const newPosts = await FetchMorePosts({
-      input: input,
-      postCount: posts.length,
-    });
+  const [hasMore, setHasMore] = useState(true);
 
-    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-    setIsLoadingMore(false);
+  const loadMore = async () => {
+    setIsLoadingMore(true);
+    try {
+      const result = await fetchContentfulPosts({
+        contentType: input === 'Nyheter' ? 'news' : 'competition',
+        limit: 3,
+        skip: posts.length,
+      });
+
+      setPosts((prev) => [
+        ...prev,
+        ...(result.items as (CompetitionPost | NewsPost)[]),
+      ]);
+
+      // Hide button if we've loaded all posts
+      if (posts.length + result.items.length >= result.total) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoadingMore(false);
+    }
   };
 
+  if (!hasMore) return null;
+
   return (
-    <>
-      <div className="flex flex-col space-y-4 w-full max-w-[1300px] mt-2 mx-auto">
-        <div className="flex justify-center">
-          <button
-            onClick={fetchContentfulHandler}
-            className="p-4 bg-sky-400 rounded-md mx-auto bg-black bg-opacity-20 hover:bg-opacity-30 rounded-2xl my-8 p-4"
-          >
-            Ladda in fler
-          </button>
-        </div>
-      </div>
-    </>
+    <button
+      onClick={loadMore}
+      className="bg-sky-500 bg-opacity-50 text-gray-300 p-4 rounded-md mt-4 mx-auto my-8"
+    >
+      Ladda fler
+    </button>
   );
 }

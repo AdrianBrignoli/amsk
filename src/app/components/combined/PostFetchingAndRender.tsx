@@ -18,6 +18,7 @@ export default function PostFetchingAndRender({
 }: PostFetchingAndRenderProps) {
   const [posts, setPosts] = useState<(NewsPost | CompetitionPost)[] | []>([]);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     setPosts(initialPosts);
@@ -25,11 +26,16 @@ export default function PostFetchingAndRender({
 
   return (
     <>
-      <FilterOnName setPosts={setPosts} postType={postType} />
+      <FilterOnName
+        setPosts={setPosts}
+        postType={postType}
+        currentPosts={posts}
+        onSearchStateChange={setIsSearching}
+      />
       <section className="flex-1 flex flex-col justify-between">
         <PostHandler posts={posts} setPosts={setPosts} postType={postType} />
         {isLoadingMore && <RenderManySkeletons />}
-        {posts.length > 0 && (
+        {posts.length > 0 && !isSearching && (
           <LoadMore
             input={postType}
             setPosts={setPosts}

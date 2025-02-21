@@ -2,7 +2,7 @@
 import { createContentfulClient } from '../../../lib/contentful/ContentfulFetching';
 import { OrderFilterPaths, EntrySys } from 'contentful';
 import { createGraphQLClient } from '../../../lib/contentful/ContentfulFetching';
-import { getDataStructure } from '../utilityFn/GetDataStructure';
+import { getDataStructure } from '../utilityFn/getDataStructure';
 import { GetDataStructureReturn } from '@/app/misc/types';
 
 // CONTENTFUL FNS
@@ -16,32 +16,35 @@ type contenfulFilterProps = {
     | 'sys.contentType.sys.id'
     | '-sys.contentType.sys.id'
   )[];
+  query?: Record<string, any>;
 };
 
-export const fetchContentfulPosts = async <T extends GetDataStructureReturn>({
+export const fetchContentfulPosts = async ({
   contentType,
   limit,
   skip,
   order,
-}: contenfulFilterProps): Promise<T | undefined> => {
+  query,
+}: contenfulFilterProps) => {
   try {
     const client = createContentfulClient();
-
-    if (!client) {
-      throw new Error('contentful client could not be created');
-    }
+    if (!client) throw new Error('Failed to initialize Contentful client');
 
     const result = await client.getEntries({
       content_type: contentType,
-      limit: limit,
-      skip: skip,
-      order: order,
+      limit: limit || 100,
+      skip: skip || 0,
+      order: order || ['-sys.createdAt'],
+      ...query,
     });
 
-    return getDataStructure(contentType, result) as T;
-  } catch (err) {
-    console.error('Failed to fetch data from Contentful', err);
-    return undefined;
+    return {
+      items: getDataStructure(contentType, result),
+      total: result.total,
+    };
+  } catch (error) {
+    console.error('Error fetching Contentful posts:', error);
+    throw new Error('Failed to fetch content');
   }
 };
 

@@ -1,59 +1,134 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiSearch } from 'react-icons/bi';
-import { fetchContentfulNewsAndCompetition } from '../../../../lib/contentful/ContentfulFetching';
-import { createContentfulClient } from '../../../../lib/contentful/ContentfulFetching';
 import { CompetitionPost, NewsPost } from '@/app/misc/types';
+import { fetchContentfulPosts } from '@/app/actions/actions';
 
 type FilterOnNameProps = {
   setPosts: React.Dispatch<
     React.SetStateAction<(CompetitionPost | NewsPost)[] | []>
   >;
   postType: 'Nyheter' | 'Tävlingar';
+  currentPosts: (CompetitionPost | NewsPost)[] | [];
+  onSearchStateChange: (isSearching: boolean) => void;
+};
+
+type SavedPostsState = {
+  posts: (CompetitionPost | NewsPost)[] | [];
+  count: number;
 };
 
 export default function FilterOnName({
   setPosts,
   postType,
+  currentPosts,
+  onSearchStateChange,
 }: FilterOnNameProps) {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [savedState, setSavedState] = useState<SavedPostsState>({
+    posts: [],
+    count: 0,
+  });
 
-  const searchTermHandler = (e: any) => {
-    setSearchTerm(e.target.value);
-    console.log(searchTerm);
+  const validateSearchTerm = (term: string): boolean => {
+    if (term.length > 50) {
+      setError('Söktermen är för lång');
+      return false;
+    }
+    setError(null);
+    return true;
+  };
+
+  const searchTermHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    if (validateSearchTerm(term)) {
+      if (term === '') {
+        setIsSearching(false);
+        onSearchStateChange(false);
+        fetchOriginalPosts();
+      }
+    }
+  };
+
+  const fetchOriginalPosts = async () => {
+    try {
+      const result = await fetchContentfulPosts({
+        contentType: postType === 'Nyheter' ? 'news' : 'competition',
+        limit: savedState.count || 3,
+        skip: 0,
+      });
+
+      setPosts(
+        postType === 'Nyheter'
+          ? (result.items as NewsPost[])
+          : (result.items as CompetitionPost[])
+      );
+    } catch (error) {
+      setError('Kunde inte återställa inläggen');
+      console.error(error);
+    }
   };
 
   const search = async () => {
-    const postTypeTrans = postType === 'Nyheter' ? 'news' : 'competition';
+    try {
+      setSavedState({
+        posts: currentPosts,
+        count: currentPosts.length,
+      });
 
-    const client = createContentfulClient();
+      setIsSearching(!!searchTerm);
+      onSearchStateChange(!!searchTerm);
 
-    if (!client) return;
+      const result = await fetchContentfulPosts({
+        contentType: postType === 'Nyheter' ? 'news' : 'competition',
+        limit: 100,
+        skip: 0,
+        query: searchTerm
+          ? {
+              'fields.title[match]': searchTerm,
+            }
+          : undefined,
+      });
 
-    const rslt = await fetchContentfulNewsAndCompetition(
-      client,
-      0,
-      postTypeTrans,
-      searchTerm
-    );
-
-    console.log(rslt);
-    setPosts(rslt);
+      setPosts(
+        postType === 'Nyheter'
+          ? (result.items as NewsPost[])
+          : (result.items as CompetitionPost[])
+      );
+    } catch (error) {
+      setError('Kunde inte utföra sökningen');
+      console.error(error);
+    }
   };
 
   return (
-    <div className="bg-black bg-opacity-20 w-full mb-4">
+    <div className="w-full bg-black bg-opacity-50">
       <section className="flex justify-between relative w-full max-w-[1300px] mx-auto rounded-b-3xl p-4">
         <h3 className="text-3xl font-thin">Inlägg</h3>
-        <div className="flex items-center">
-          <input
-            className="bg-black bg-opacity-50 text-gray-300 p-2 rounded-md"
-            placeholder="Sök-term"
-            onInput={searchTermHandler}
-          ></input>
-          <BiSearch className="ml-4 text-xl" onClick={search} />
+        <div className="flex flex-col items-end">
+          <div className="flex items-center">
+            <input
+              className="bg-black bg-opacity-50 text-gray-300 p-2 rounded-md"
+              placeholder="Sök-term"
+              value={searchTerm}
+              onInput={searchTermHandler}
+            />
+            <BiSearch
+              className="ml-4 text-xl cursor-pointer"
+              onClick={search}
+            />
+          </div>
+          {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
         </div>
       </section>
+      {isSearching && (
+        <div className="text-sm text-gray-400 text-center pb-2">
+          Sökresultat för: {searchTerm}
+        </div>
+      )}
     </div>
   );
 }

@@ -8,40 +8,9 @@ import { NewsPost, CompetitionPost } from '@/app/misc/types';
 export default function TextMain() {
   const [posts, setPosts] = useState<(NewsPost | CompetitionPost)[]>();
 
-  /*
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subheadingRef = useRef<HTMLHeadingElement>(null);
-  const paragraphRef = useRef<HTMLParagraphElement>(null);
-
-  gsap.fromTo(
-    sectionRef.current,
-    { opacity: 0, y: 50 },
-    { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }
-  );
-  gsap.fromTo(
-    headingRef.current,
-    { opacity: 0, y: 50 },
-    { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.2 }
-  );
-  gsap.fromTo(
-    subheadingRef.current,
-    { opacity: 0, y: 50 },
-    { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.4 }
-  );
-  gsap.fromTo(
-    paragraphRef.current,
-    { opacity: 0, y: 50 },
-    { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.6 }
-  );
-  */
-
   return (
     <>
-      <section
-        //ref={sectionRef}
-        className="flex-1 flex justify-center items-center max-w-[1300px] lg:rounded-2xl text-white mt-20 lg:mt-8 mb-16 mx-auto"
-      >
+      <section className="flex-1 flex justify-center items-center max-w-[1300px] lg:rounded-2xl text-white mt-20 lg:mt-8 mb-16 mx-auto">
         <TempelateOne
           title="Kalender"
           text="Använd kalendern för att se uppkommande nyheter eller tävlingar.

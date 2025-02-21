@@ -5,10 +5,14 @@ import { LinkPost } from '@/app/misc/types';
 import { fetchContentfulPosts } from '@/app/actions/actions';
 import LinksCont from '@/app/components/basics/LinksCont';
 
+export const revalidate = 3600; // Revalidate every hour (in seconds)
+
 export default async function Lankar() {
-  const data: LinkPost[] | undefined = await fetchContentfulPosts({
+  const result = await fetchContentfulPosts({
     contentType: 'lankar',
   });
+
+  const data = result.items ? (result.items as LinkPost[]) : undefined;
 
   return (
     <>

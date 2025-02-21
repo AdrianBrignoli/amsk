@@ -6,9 +6,11 @@ import { ContactPost } from '@/app/misc/types';
 import NoData from '@/app/components/basics/NoData';
 
 export default async function Contact() {
-  const data: ContactPost[] | undefined = await fetchContentfulPosts({
+  const result = await fetchContentfulPosts({
     contentType: 'contact',
   });
+
+  const data = result.items ? (result.items as ContactPost[]) : undefined;
 
   return (
     <section className="flex-1 flex flex-col text-white w-full">

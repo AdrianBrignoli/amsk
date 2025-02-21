@@ -17,8 +17,6 @@ export default function Posts({
   let categoryBgColor = '';
   let sectionLabel = '';
 
-  console.log('POSTTYPE', postType);
-
   if (postType === 'Nyheter') {
     categoryBgColor = '#2C3093';
     sectionLabel = 'Nyhet';
@@ -26,7 +24,7 @@ export default function Posts({
     categoryBgColor = '#EA5661';
     sectionLabel = 'Tävling';
   }
-  console.log('css', publishDate);
+
   return (
     <section
       className="flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component"

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import { gsap } from 'gsap';
 import Image from 'next/image';
-import { BsBoxArrowDown } from 'react-icons/bs';
+import { SlArrowDown } from 'react-icons/sl';
 
 export default function menu() {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -195,7 +195,7 @@ export default function menu() {
             <div className="w-1 h-3/4 bg-white bg-opacity-20 absolute left-0 top-[0.5em]"></div>
             <div className={`${styling} hidden lg:flex`}>
               Om oss
-              <BsBoxArrowDown className="ml-4" />
+              <SlArrowDown className="ml-4" />
             </div>
 
             <div className="absolute -z-10 left-0 overflow-hidden">

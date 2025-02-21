@@ -1,6 +1,5 @@
 import { LinkPost } from '@/app/misc/types';
 import { PiTextT, PiLink } from 'react-icons/pi';
-import Link from 'next/link';
 import PostsMisc from '../text-content/PostsMisc';
 
 type LinksContProps = {
@@ -20,11 +19,18 @@ export default function LinksCont({ posts }: LinksContProps) {
             icon: <PiLink className="mr-4" />,
             content: (
               <p className="text-gray-400">
-                <Link href={post.linkUrl}>{post.linkUrl}</Link>
+                <a
+                  href={post.linkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {post.linkUrl}
+                </a>
               </p>
             ),
           },
         ];
+
         return <PostsMisc key={post.id} itemRows={itemRows} />;
       })}
     </>

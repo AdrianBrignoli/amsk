@@ -17,27 +17,6 @@ export const createContentfulClient = () => {
   return client;
 };
 
-import { getDataStructure } from '@/app/utilityFn/GetDataStructure';
-import { GetDataStructureReturn } from '@/app/misc/types';
-export const fetchContentfulNewsAndCompetition = async <
-  T extends GetDataStructureReturn
->(
-  client: ContentfulClientApi<undefined>,
-  skipNum: number,
-  type: 'news' | 'competition',
-  searchTerm?: string
-) => {
-  const rslt = await client.getEntries({
-    content_type: type,
-    limit: 3,
-    query: searchTerm,
-    skip: skipNum,
-    order: ['-sys.createdAt'],
-  });
-
-  return getDataStructure(type, rslt) as CompetitionPost[] | NewsPost[];
-};
-
 export const createGraphQLClient = () => {
   const spaceId = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
   const accessToken = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
