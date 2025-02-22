@@ -69,10 +69,6 @@ export type contentfulData = {
   linkUrl: string | null;
 };
 
-export type CalenderProps = {
-  setPosts: (posts: (NewsPost | CompetitionPost)[]) => void;
-};
-
 export type CalenderItems = {
   competition: CompetitionPost[] | [];
   news: NewsPost[] | [];

@@ -53,7 +53,7 @@ import { restructGraphQLData, getStartEndDate } from '../utilityFn/tinyUtils';
 export const fetchCalenderPosts = async (date: Date) => {
   const query = queryGetPostsByMonth();
   const variables = getStartEndDate(date);
-
+  
   const client = createGraphQLClient();
 
   try {

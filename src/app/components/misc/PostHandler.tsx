@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { CompetitionPost, NewsPost } from '@/app/misc/types';
-import { useEffect, useState } from 'react';
-import PostsSkeleton from '../skeleton/PostsSkeleton';
-import Posts from '../text-content/Sections';
-import { RenderManySkeletons } from '../skeleton/PostsSkeleton';
+import { CompetitionPost, NewsPost } from "@/app/misc/types";
+import { useEffect, useState } from "react";
+import PostsSkeleton from "../skeleton/PostsSkeleton";
+import NewsCompetitionPost from "../posts/news-compeition/NewsCompetitionPost";
+import { RenderManySkeletons } from "../skeleton/PostsSkeleton";
 
 type PostHandlerProps = {
   posts: (NewsPost | CompetitionPost)[] | [];
   setPosts: React.Dispatch<
     React.SetStateAction<(NewsPost | CompetitionPost)[]>
   >;
-  postType: 'Nyheter' | 'Tävlingar';
+  postType: "Nyheter" | "Tävlingar";
 };
 
 export default function PostHandler({
@@ -45,12 +45,9 @@ export default function PostHandler({
       ) : (
         <div>
           {posts.map((post) => (
-            <Posts
+            <NewsCompetitionPost
               key={post.id}
-              id={post.id}
-              title={post.title}
-              publishDate={post.publishDate}
-              content={post.content}
+              post={post}
               postType={postType}
             />
           ))}

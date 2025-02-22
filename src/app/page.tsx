@@ -1,5 +1,5 @@
-import TextMain from './components/text-content/Text-main';
-import HeaderText from './components/text-content/HeaderText';
+import TextMain from "./components/text-content/Text-main";
+import HeaderText from "./components/text-content/HeaderText";
 
 export default async function Home(props: any) {
   return (

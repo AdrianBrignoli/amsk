@@ -1,6 +1,6 @@
-import { LinkPost } from '@/app/misc/types';
-import { PiTextT, PiLink } from 'react-icons/pi';
-import PostsMisc from '../text-content/PostsMisc';
+import { LinkPost } from "@/app/misc/types";
+import { PiTextT, PiLink } from "react-icons/pi";
+import PostsMisc from "../posts/information/InformativePost";
 
 type LinksContProps = {
   posts: LinkPost[];
@@ -8,7 +8,7 @@ type LinksContProps = {
 
 export default function LinksCont({ posts }: LinksContProps) {
   return (
-    <>
+    <ul className="space-y-2">
       {posts.map((post) => {
         const itemRows = [
           {
@@ -31,8 +31,12 @@ export default function LinksCont({ posts }: LinksContProps) {
           },
         ];
 
-        return <PostsMisc key={post.id} itemRows={itemRows} />;
+        return (
+          <li key={post.id}>
+            <PostsMisc itemRows={itemRows} />
+          </li>
+        );
       })}
-    </>
+    </ul>
   );
 }

@@ -1,12 +1,17 @@
-'use client';
-import { useState } from 'react';
-import Posts from './Sections';
-import TempelateOne from '../tempelates/TempelateOne';
-import CalenderWithText from '../combined/CalenderWithText';
-import { NewsPost, CompetitionPost } from '@/app/misc/types';
+"use client";
+import { useState } from "react";
+import NewsCompetitionPost from "../posts/news-compeition/NewsCompetitionPost";
+import TempelateOne from "../tempelates/TempelateOne";
+import CalenderWithText from "../combined/CalenderWithText";
+import { NewsPost, CompetitionPost } from "@/app/misc/types";
 
 export default function TextMain() {
   const [posts, setPosts] = useState<(NewsPost | CompetitionPost)[]>();
+
+  // props down events up principle
+  const handlePostsUpdate = (selectedPosts: (NewsPost | CompetitionPost)[]) => {
+    setPosts(selectedPosts);
+  };
 
   return (
     <>
@@ -16,7 +21,7 @@ export default function TextMain() {
           text="Använd kalendern för att se uppkommande nyheter eller tävlingar.
                 Inlägg om nyheter är färgkodade blå medans inlägg relaterade
                 till uppkommande tävlingar är röda."
-          component={<CalenderWithText setPosts={setPosts} />}
+          component={<CalenderWithText onPostsUpdate={handlePostsUpdate} />}
         />
       </section>
       {posts !== undefined && posts?.length > 0 && (
@@ -24,12 +29,9 @@ export default function TextMain() {
           <h3 className="text-2xl text-center text-gray-400 py-10">Inlägg</h3>
           <div className="max-w-[1300px] mx-auto">
             {posts.map((post) => (
-              <Posts
+              <NewsCompetitionPost
                 key={post.id}
-                id={post.id}
-                title={post.title}
-                publishDate={post.publishDate}
-                content={post.content}
+                post={post}
                 postType={post.postType}
               />
             ))}

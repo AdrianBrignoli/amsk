@@ -1,9 +1,9 @@
-import { PiPerson, PiPhone } from 'react-icons/pi';
-import { PiTextT } from 'react-icons/pi';
-import PostsMisc from '../text-content/PostsMisc';
-import { ContactPost } from '@/app/misc/types';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { Document } from '@contentful/rich-text-types';
+import { PiPerson, PiPhone } from "react-icons/pi";
+import { PiTextT } from "react-icons/pi";
+import InformativePost from "../posts/information/InformativePost";
+import { ContactPost } from "@/app/misc/types";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Document } from "@contentful/rich-text-types";
 
 type ContactContProps = {
   posts: ContactPost[];
@@ -30,7 +30,7 @@ export default function ContactCont({ posts }: ContactContProps) {
           },
         ];
 
-        return <PostsMisc key={post.id} itemRows={itemRows} />;
+        return <InformativePost key={post.id} itemRows={itemRows} />;
       })}
     </>
   );

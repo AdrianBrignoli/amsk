@@ -1,135 +1,85 @@
-'use client';
-import { useEffect, useState } from 'react';
-import Calendar from 'react-calendar';
-import { CalenderProps } from '@/app/misc/types';
-import { fetchCalenderPosts } from '@/app/actions/actions';
-import { NewsPost, CompetitionPost } from '@/app/misc/types';
-import { ValuePiece, Value } from '@/app/misc/types';
+"use client";
+import { useEffect } from "react";
+import Calendar from "react-calendar";
+import { useCalendar } from "./useCalendar";
+import { NewsPost, CompetitionPost, ValuePiece } from "@/app/misc/types";
+import { getTileClassName } from "./utils";
 
-const Calender: React.FC<CalenderProps> = ({ setPosts }) => {
-  const [date, setDate] = useState<Value>(new Date());
-  const [newsDates, setNewsDates] = useState<Date[]>([]);
-  const [competitionDates, setCompetitionDates] = useState<Date[]>([]);
-  const [newsPostsData, setNewsPostData] = useState<NewsPost[] | []>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [competitionPostData, setCompetitionPostData] = useState<
-    CompetitionPost[] | []
-  >([]);
+interface CalenderProps {
+  onPostsUpdate: (posts: (NewsPost | CompetitionPost)[]) => void;
+}
 
-  const dothis = async () => {
-    const { newsPostData, competitionPostData } = await fetchCalenderPosts(
-      new Date()
-    );
-    setPostDates(newsPostData, competitionPostData);
-  };
+const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
+  const {
+    date,
+    isLoading,
+    newsDates,
+    competitionDates,
+    newsPostsData,
+    competitionPostData,
+    setPostDates,
+    fetchPosts,
+    setIsLoading,
+    setNewsPostData,
+    setCompetitionPostData,
+  } = useCalendar(onPostsUpdate);
 
   useEffect(() => {
-    dothis();
-  }, []);
-
-  const setPostDates = (
-    newsPostData: NewsPost[],
-    competitionPostData: CompetitionPost[]
-  ) => {
-    const newsPostsDates = newsPostData
-      .map((post) => post.publishDate)
-      .filter((publishDate): publishDate is string => !!publishDate)
-      .map((publishDate) => new Date(publishDate));
-
-    const competitionPostsDates = competitionPostData
-      .map((post) => post.publishDate)
-      .filter((publishDate): publishDate is string => !!publishDate)
-      .map((publishDate) => new Date(publishDate));
-
-    setNewsDates(newsPostsDates);
-    setCompetitionDates(competitionPostsDates);
-  };
+    const initializeCalendar = async () => {
+      const result = await fetchPosts(new Date());
+      if (result) {
+        setPostDates(result.newsPostData, result.competitionPostData);
+      }
+    };
+    initializeCalendar();
+  }, [fetchPosts, setPostDates]);
 
   const handleMonthChange = async (date: ValuePiece) => {
+    if (!date) return;
+
     setIsLoading(true);
-    if (date === null) return;
-
-    const { newsPostData, competitionPostData } = await fetchCalenderPosts(
-      date
-    );
-
-    setNewsPostData(newsPostData);
-    setCompetitionPostData(competitionPostData);
-
-    setPostDates(newsPostData, competitionPostData);
+    const result = await fetchPosts(date);
+    if (result) {
+      setNewsPostData(result.newsPostData);
+      setCompetitionPostData(result.competitionPostData);
+      setPostDates(result.newsPostData, result.competitionPostData);
+    }
     setIsLoading(false);
   };
 
-  const renderPosts = (date: ValuePiece) => {
-    {
-      /* Comparing dates in JS is beyond strange */
-    }
-    const dateNormalized = date?.toISOString().split('T')[0];
+  const handleDayClick = (date: ValuePiece) => {
+    if (!date) return;
 
-    const newsPostDataChosenDate = newsPostsData.filter(
-      (post) =>
-        new Date(post.publishDate).toISOString().split('T')[0] ===
-        dateNormalized
-    );
-
-    const competitionPostDataChosenDate = competitionPostData.filter(
-      (post) =>
-        new Date(post.publishDate).toISOString().split('T')[0] ===
-        dateNormalized
-    );
-
-    const combinedPosts = [
-      ...newsPostDataChosenDate,
-      ...competitionPostDataChosenDate,
+    const dateStr = date.toISOString().split("T")[0];
+    const filteredPosts = [
+      ...newsPostsData.filter(
+        (post) =>
+          new Date(post.publishDate).toISOString().split("T")[0] === dateStr
+      ),
+      ...competitionPostData.filter(
+        (post) =>
+          new Date(post.publishDate).toISOString().split("T")[0] === dateStr
+      ),
     ];
-    setPosts(combinedPosts);
+    onPostsUpdate(filteredPosts);
   };
 
   return (
-    <>
-      <div className="relative w-full h-[22em] bg-black bg-opacity-40 rounded-2xl p-4">
-        <Calendar
-          onActiveStartDateChange={({ activeStartDate }) =>
-            handleMonthChange(activeStartDate)
-          }
-          onClickDay={renderPosts}
-          value={date}
-          locale="sv"
-          tileClassName={({ date }) => {
-            let className = '';
-            let isNews = false;
-            let isComp = false;
-            const dateString = date.toISOString().split('T')[0];
-
-            if (
-              newsDates.some(
-                (newsDate) =>
-                  newsDate.toISOString().split('T')[0] === dateString
-              )
-            ) {
-              className = 'news';
-              isNews = true;
-            }
-            if (
-              competitionDates.some(
-                (competitionDate) =>
-                  competitionDate.toISOString().split('T')[0] === dateString
-              )
-            ) {
-              className = 'competition';
-              isComp = true;
-            }
-            if (isNews && isComp) {
-              className = 'newsComp';
-            }
-
-            return className || 'hover:bg-gray-800';
-          }}
-          className="w-full h-full"
-        />
-        {isLoading && <div className="spinner absolute left-2 bottom-2"></div>}
-      </div>
-    </>
+    <div className="relative w-full h-[22em] bg-black bg-opacity-40 rounded-2xl p-4">
+      <Calendar
+        onActiveStartDateChange={({ activeStartDate }) =>
+          handleMonthChange(activeStartDate)
+        }
+        onClickDay={handleDayClick}
+        value={date}
+        locale="sv"
+        tileClassName={({ date }) =>
+          getTileClassName(date, newsDates, competitionDates)
+        }
+        className="w-full h-full"
+      />
+      {isLoading && <div className="spinner absolute left-2 bottom-2" />}
+    </div>
   );
 };
 
