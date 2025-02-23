@@ -1,9 +1,9 @@
-import HeaderText from '@/app/components/text-content/HeaderText';
-import { fetchContentfulPosts } from '@/app/actions/actions';
-import PostFetchingAndRender from '@/app/components/combined/PostFetchingAndRender';
-import { CompetitionPost } from '@/app/misc/types';
-import { Suspense } from 'react';
-import PostsSkeleton from '@/app/components/skeleton/PostsSkeleton';
+import HeaderText from "@/app/components/text-content/HeaderText";
+import { fetchContentfulPosts } from "@/app/actions/actions";
+import PostFetchingAndRender from "@/app/components/combined/PostFetchingAndRender";
+import { CompetitionPost } from "@/app/misc/types";
+import { Suspense } from "react";
+import { RenderManySkeletons } from "@/app/components/skeleton/PostsSkeleton";
 
 export default function Competition() {
   return (
@@ -12,8 +12,8 @@ export default function Competition() {
         hone="Tävlingar"
         htwo="Här kan du läsa om uppkommande tävlingar."
       />
-      <div className="flex-1 flex flex-col w-full max-w-[1300px] mx-auto">
-        <Suspense fallback={<PostsSkeleton />}>
+      <div className="flex-1 flex flex-col w-full mx-auto">
+        <Suspense fallback={<RenderManySkeletons />}>
           <CompetitionContent />
         </Suspense>
       </div>
@@ -23,7 +23,7 @@ export default function Competition() {
 
 async function CompetitionContent() {
   const result = await fetchContentfulPosts({
-    contentType: 'competition',
+    contentType: "competition",
     limit: 3,
     skip: 0,
   });
@@ -39,3 +39,5 @@ async function CompetitionContent() {
     />
   );
 }
+
+export const revalidate = 3600; // 1 hour

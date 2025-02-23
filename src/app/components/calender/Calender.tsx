@@ -51,6 +51,14 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
     if (!date) return;
 
     const dateStr = date.toISOString().split("T")[0];
+
+    // Check if date has any posts before proceeding
+    const hasPostsOnDate =
+      newsDates.some((d) => d.toISOString().split("T")[0] === dateStr) ||
+      competitionDates.some((d) => d.toISOString().split("T")[0] === dateStr);
+
+    if (!hasPostsOnDate) return;
+
     const filteredPosts = [
       ...newsPostsData.filter(
         (post) =>
@@ -61,6 +69,7 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
           new Date(post.publishDate).toISOString().split("T")[0] === dateStr
       ),
     ];
+
     onPostsUpdate(filteredPosts);
   };
 

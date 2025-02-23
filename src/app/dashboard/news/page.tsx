@@ -1,16 +1,16 @@
-import HeaderText from '@/app/components/text-content/HeaderText';
-import PostFetchingAndRender from '@/app/components/combined/PostFetchingAndRender';
-import { Suspense } from 'react';
-import PostsSkeleton from '@/app/components/skeleton/PostsSkeleton';
-import { fetchContentfulPosts } from '@/app/actions/actions';
-import { NewsPost } from '@/app/misc/types';
+import HeaderText from "@/app/components/text-content/HeaderText";
+import PostFetchingAndRender from "@/app/components/combined/PostFetchingAndRender";
+import { Suspense } from "react";
+import { RenderManySkeletons } from "@/app/components/skeleton/PostsSkeleton";
+import { fetchContentfulPosts } from "@/app/actions/actions";
+import { NewsPost } from "@/app/misc/types";
 
 export default function News() {
   return (
     <>
       <HeaderText hone="Nyheter" htwo="Här kan du läsa om senaste nytt." />
-      <div className="flex-1 flex flex-col w-full max-w-[1300px] mx-auto">
-        <Suspense fallback={<PostsSkeleton />}>
+      <div className="flex-1 flex flex-col w-full mx-auto">
+        <Suspense fallback={<RenderManySkeletons />}>
           <NewsPosts />
         </Suspense>
       </div>
@@ -21,7 +21,7 @@ export default function News() {
 // Separate async component for posts
 async function NewsPosts() {
   const result = await fetchContentfulPosts({
-    contentType: 'news',
+    contentType: "news",
     limit: 3,
     skip: 0,
   });

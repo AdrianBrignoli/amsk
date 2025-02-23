@@ -8,17 +8,10 @@ import { RenderManySkeletons } from "../skeleton/PostsSkeleton";
 
 type PostHandlerProps = {
   posts: (NewsPost | CompetitionPost)[] | [];
-  setPosts: React.Dispatch<
-    React.SetStateAction<(NewsPost | CompetitionPost)[]>
-  >;
   postType: "Nyheter" | "Tävlingar";
 };
 
-export default function PostHandler({
-  posts,
-  setPosts,
-  postType,
-}: PostHandlerProps) {
+export default function PostHandler({ posts, postType }: PostHandlerProps) {
   const [isInitialPostsFetched, setIsInitialPostsFetched] =
     useState<boolean>(false);
 
@@ -26,7 +19,7 @@ export default function PostHandler({
     if (posts.length) {
       setIsInitialPostsFetched(true);
     }
-  }, []);
+  }, [posts.length]);
 
   return (
     <>
@@ -43,7 +36,7 @@ export default function PostHandler({
           </div>
         )
       ) : (
-        <div>
+        <div className="my-4">
           {posts.map((post) => (
             <NewsCompetitionPost
               key={post.id}

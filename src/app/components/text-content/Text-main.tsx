@@ -25,9 +25,12 @@ export default function TextMain() {
         />
       </section>
       {posts !== undefined && posts?.length > 0 && (
-        <div className="w-full  bg-black bg-opacity-30 lg:px-8 px-4 space-y-4 pb-8 slide-down">
+        <div
+          id="here"
+          className="flex-1 w-full max-w-[1300px] mx-auto rounded-2xl lg:px-8 px-4 space-y-4 pb-8 slide-down"
+        >
           <h3 className="text-2xl text-center text-gray-400 py-10">Inlägg</h3>
-          <div className="max-w-[1300px] mx-auto">
+          <div className=" mx-auto">
             {posts.map((post) => (
               <NewsCompetitionPost
                 key={post.id}

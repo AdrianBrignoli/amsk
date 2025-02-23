@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { NewsPost, CompetitionPost } from '@/app/misc/types';
-import LoadMore from '../misc/LoadMore';
-import FilterOnName from '../basics/FilterOnName';
-import PostHandler from '../misc/PostHandler';
-import { RenderManySkeletons } from '../skeleton/PostsSkeleton';
+import { useEffect, useState } from "react";
+import { NewsPost, CompetitionPost } from "@/app/misc/types";
+import LoadMore from "../misc/LoadMore";
+import FilterOnName from "../basics/FilterOnName";
+import PostHandler from "../misc/PostHandler";
+import { RenderManySkeletons } from "../skeleton/PostsSkeleton";
 
 type PostFetchingAndRenderProps = {
   initialPosts: (NewsPost | CompetitionPost)[] | [];
-  postType: 'Nyheter' | 'Tävlingar';
+  postType: "Nyheter" | "Tävlingar";
 };
 
 export default function PostFetchingAndRender({
@@ -32,8 +32,8 @@ export default function PostFetchingAndRender({
         currentPosts={posts}
         onSearchStateChange={setIsSearching}
       />
-      <section className="flex-1 flex flex-col justify-between">
-        <PostHandler posts={posts} setPosts={setPosts} postType={postType} />
+      <section className="flex-1 flex flex-col justify-between w-full max-w-[1300px] mx-auto xl:px-0 px-4">
+        <PostHandler posts={posts} postType={postType} />
         {isLoadingMore && <RenderManySkeletons />}
         {posts.length > 0 && !isSearching && (
           <LoadMore
