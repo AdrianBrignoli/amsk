@@ -1,7 +1,7 @@
 import { BiText, BiCalendar } from "react-icons/bi";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { PostType, NewsPost, CompetitionPost } from "@/app/misc/types";
-import { getRelevantDate } from "@/app/utilityFn/tinyUtils";
+import { PostType, NewsPost, CompetitionPost } from "@/app/definitions/types";
+import { getRelevantDate } from "@/app/utility/tinyUtils";
 import { CategoryLabel } from "./CategoryLabel";
 import { PostContent } from "./PostContent";
 

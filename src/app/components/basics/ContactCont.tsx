@@ -1,7 +1,7 @@
 import { PiPerson, PiPhone } from "react-icons/pi";
 import { PiTextT } from "react-icons/pi";
-import InformativePost from "../posts/information/InformativePost";
-import { ContactPost } from "@/app/misc/types";
+import InformativePost from "../shared/links-contact/InformativePost";
+import { ContactPost } from "@/app/definitions/types";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { Document } from "@contentful/rich-text-types";
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NewsPost, CompetitionPost, Value } from '@/app/misc/types';
+import { NewsPost, CompetitionPost, Value } from '@/app/definitions/types';
 
 interface CalendarState {
   date: string;
@@ -8,6 +8,7 @@ interface CalendarState {
   competitionDates: string[];
   newsPostsData: NewsPost[];
   competitionPostData: CompetitionPost[];
+  selectedPosts: (NewsPost | CompetitionPost)[];
 }
 
 const initialState: CalendarState = {
@@ -17,6 +18,7 @@ const initialState: CalendarState = {
   competitionDates: [],
   newsPostsData: [],
   competitionPostData: [],
+  selectedPosts: [],
 };
 
 export const calendarSlice = createSlice({
@@ -49,8 +51,14 @@ export const calendarSlice = createSlice({
       state.newsPostsData = action.payload.newsPostData;
       state.competitionPostData = action.payload.competitionPostData;
     },
+    setSelectedPosts: (state, action: PayloadAction<(NewsPost | CompetitionPost)[]>) => {
+      state.selectedPosts = action.payload;
+    },
+    clearSelectedPosts: (state) => {
+      state.selectedPosts = [];
+    },
   },
 });
 
-export const { setDate, setLoading, setPostDates } = calendarSlice.actions;
+export const { setDate, setLoading, setPostDates, setSelectedPosts, clearSelectedPosts } = calendarSlice.actions;
 export default calendarSlice.reducer; 

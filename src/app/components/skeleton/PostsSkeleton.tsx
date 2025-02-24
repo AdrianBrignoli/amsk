@@ -1,3 +1,5 @@
+import { INITIAL_POSTS_LIMIT } from "@/app/definitions/constants";
+
 export default function PostsSkeleton() {
   return (
     <section className="max-w-[1300px] w-full mx-auto flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component">
@@ -20,7 +22,7 @@ export default function PostsSkeleton() {
 }
 
 export const RenderManySkeletons = () => {
-  return Array(3)
+  return Array(INITIAL_POSTS_LIMIT)
     .fill(0)
     .map((_, index) => <PostsSkeleton key={index} />);
 };

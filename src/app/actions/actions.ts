@@ -2,8 +2,7 @@
 import { createContentfulClient } from '../../../lib/contentful/ContentfulFetching';
 import { OrderFilterPaths, EntrySys } from 'contentful';
 import { createGraphQLClient } from '../../../lib/contentful/ContentfulFetching';
-import { getDataStructure } from '../utilityFn/getDataStructure';
-import { GetDataStructureReturn } from '@/app/misc/types';
+import { getDataStructure } from '../utility/getDataStructure';
 
 // CONTENTFUL FNS
 
@@ -49,7 +48,7 @@ export const fetchContentfulPosts = async ({
 };
 
 import { queryGetPostsByMonth } from '../../../lib/contentful/queries/queries';
-import { restructGraphQLData, getStartEndDate } from '../utilityFn/tinyUtils';
+import { restructGraphQLData, getStartEndDate } from '../utility/tinyUtils';
 export const fetchCalenderPosts = async (date: Date) => {
   const query = queryGetPostsByMonth();
   const variables = getStartEndDate(date);

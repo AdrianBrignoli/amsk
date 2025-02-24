@@ -1,6 +1,6 @@
 import { createClient } from 'contentful';
 import { ContentfulClientApi } from 'contentful';
-import { CompetitionPost, NewsPost } from '@/app/misc/types';
+import { CompetitionPost, NewsPost } from '@/app/definitions/types';
 import { GraphQLClient } from 'graphql-request';
 
 export const createContentfulClient = () => {

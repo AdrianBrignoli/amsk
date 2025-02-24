@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
-import Menu from "./components/Menu";
-import Footer from "./components/Footer";
+import Menu from "./components/shared/base-elements/Menu";
+import Footer from "./components/shared/base-elements/Footer";
 import { Providers } from "./components/Providers";
 import "./globals.css";
 import { ErrorBoundary } from "./components/error-bondaries/ErrorBoundary";

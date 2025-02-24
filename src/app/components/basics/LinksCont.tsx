@@ -1,6 +1,6 @@
-import { LinkPost } from "@/app/misc/types";
+import { LinkPost } from "@/app/definitions/types";
 import { PiTextT, PiLink } from "react-icons/pi";
-import PostsMisc from "../posts/information/InformativePost";
+import PostsMisc from "../shared/links-contact/InformativePost";
 
 type LinksContProps = {
   posts: LinkPost[];

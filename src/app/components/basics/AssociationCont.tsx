@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { AssociationPost } from "@/app/misc/types";
+import { AssociationPost } from "@/app/definitions/types";
 import { Document, BLOCKS } from "@contentful/rich-text-types";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
