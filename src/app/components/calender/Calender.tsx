@@ -1,15 +1,25 @@
 "use client";
 import { useEffect } from "react";
 import Calendar from "react-calendar";
-import { useCalendar } from "./useCalendar";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import {
+  setDate,
+  setLoading,
+  setPostDates,
+} from "@/store/slices/calendarSlice";
 import { NewsPost, CompetitionPost, ValuePiece } from "@/app/misc/types";
 import { getTileClassName } from "./utils";
+import { fetchCalenderPosts } from "@/app/actions/actions";
+import { useErrorBoundary } from "react-error-boundary";
 
 interface CalenderProps {
   onPostsUpdate: (posts: (NewsPost | CompetitionPost)[]) => void;
 }
 
 const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
+  const dispatch = useDispatch();
+  const { showBoundary } = useErrorBoundary();
   const {
     date,
     isLoading,
@@ -17,55 +27,47 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
     competitionDates,
     newsPostsData,
     competitionPostData,
-    setPostDates,
-    fetchPosts,
-    setIsLoading,
-    setNewsPostData,
-    setCompetitionPostData,
-  } = useCalendar(onPostsUpdate);
+  } = useSelector((state: RootState) => state.calendar);
+
+  const fetchPosts = async (date: Date) => {
+    try {
+      const result = await fetchCalenderPosts(date);
+      dispatch(setPostDates(result));
+      return result;
+    } catch (error) {
+      showBoundary(error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    const initializeCalendar = async () => {
-      const result = await fetchPosts(new Date());
-      if (result) {
-        setPostDates(result.newsPostData, result.competitionPostData);
-      }
-    };
-    initializeCalendar();
-  }, [fetchPosts, setPostDates]);
+    fetchPosts(new Date());
+  }, []);
 
   const handleMonthChange = async (date: ValuePiece) => {
     if (!date) return;
-
-    setIsLoading(true);
-    const result = await fetchPosts(date);
-    if (result) {
-      setNewsPostData(result.newsPostData);
-      setCompetitionPostData(result.competitionPostData);
-      setPostDates(result.newsPostData, result.competitionPostData);
-    }
-    setIsLoading(false);
+    dispatch(setLoading(true));
+    await fetchPosts(date);
+    dispatch(setLoading(false));
   };
 
   const handleDayClick = (date: ValuePiece) => {
     if (!date) return;
-
     const dateStr = date.toISOString().split("T")[0];
 
-    // Check if date has any posts before proceeding
     const hasPostsOnDate =
-      newsDates.some((d) => d.toISOString().split("T")[0] === dateStr) ||
-      competitionDates.some((d) => d.toISOString().split("T")[0] === dateStr);
+      newsDates.some((d: string) => d.split("T")[0] === dateStr) ||
+      competitionDates.some((d: string) => d.split("T")[0] === dateStr);
 
     if (!hasPostsOnDate) return;
 
     const filteredPosts = [
       ...newsPostsData.filter(
-        (post) =>
+        (post: NewsPost) =>
           new Date(post.publishDate).toISOString().split("T")[0] === dateStr
       ),
       ...competitionPostData.filter(
-        (post) =>
+        (post: CompetitionPost) =>
           new Date(post.publishDate).toISOString().split("T")[0] === dateStr
       ),
     ];

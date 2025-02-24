@@ -1,21 +1,22 @@
-import type { Metadata } from 'next';
-import { Roboto_Condensed } from 'next/font/google';
-import './globals.css';
-import Menu from './components/Menu';
-import Footer from './components/Footer';
-import { Providers } from './components/Providers';
-import './globals.css';
-import { ErrorBoundary } from './components/error-bondaries/ErrorBoundary';
+import type { Metadata } from "next";
+import { Roboto_Condensed } from "next/font/google";
+import "./globals.css";
+import Menu from "./components/Menu";
+import Footer from "./components/Footer";
+import { Providers } from "./components/Providers";
+import "./globals.css";
+import { ErrorBoundary } from "./components/error-bondaries/ErrorBoundary";
+import { ReduxProvider } from "@/providers/ReduxProvider";
 
 const robotoCondensed = Roboto_Condensed({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '700', '900'], // Define the weights you need
-  style: ['normal', 'italic'], // Include italic if needed
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "700", "900"], // Define the weights you need
+  style: ["normal", "italic"], // Include italic if needed
 });
 
 export const metadata: Metadata = {
-  title: 'Märsta skidklubb',
-  description: 'Märsta skidklubbs hemsida',
+  title: "Märsta skidklubb",
+  description: "Märsta skidklubbs hemsida",
 };
 
 export default function RootLayout({
@@ -26,13 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={robotoCondensed.className}>
-        {/* from-[#2C3093] via-purple-900 to-[#EA5661]*/}
         <ErrorBoundary fallback={<div>Error</div>}>
-          <div className="min-h-screen flex flex-col justify-between bg-gradient-to-r from-gray-800 via-sky-950 to-gray-800 film-grain">
-            <Menu />
-            <Providers>{children}</Providers>
-          </div>
-          <Footer />
+          <ReduxProvider>
+            <div className="min-h-screen flex flex-col justify-between bg-gradient-to-r from-gray-800 via-sky-950 to-gray-800 film-grain">
+              <Menu />
+              <Providers>{children}</Providers>
+            </div>
+            <Footer />
+          </ReduxProvider>
         </ErrorBoundary>
       </body>
     </html>

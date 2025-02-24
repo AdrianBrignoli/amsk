@@ -9,7 +9,7 @@ type AssociationContProps = {
 
 export default function AssociationCont({ posts }: AssociationContProps) {
   // Get the first post's content array
-  const contentElements = posts[0].content.content;
+  const contentElements = posts[0]?.content?.content || [];
   console.log("Content elements:", contentElements);
 
   const options = {
