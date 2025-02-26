@@ -1,0 +1,18 @@
+// Brand Colors
+$brand-primary: #2C3093;    // Blue
+$brand-secondary: #EA5661;  // Red
+
+:root {
+  // CSS Custom Properties for brand colors
+  --brand-primary: #{$brand-primary};
+  --brand-secondary: #{$brand-secondary};
+
+  // Add opacity variants
+  --brand-primary-10: #{rgba($brand-primary, 0.1)};
+  --brand-primary-20: #{rgba($brand-primary, 0.2)};
+  --brand-primary-50: #{rgba($brand-primary, 0.5)};
+  
+  --brand-secondary-10: #{rgba($brand-secondary, 0.1)};
+  --brand-secondary-20: #{rgba($brand-secondary, 0.2)};
+  --brand-secondary-50: #{rgba($brand-secondary, 0.5)};
+} 

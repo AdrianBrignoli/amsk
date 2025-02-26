@@ -26,11 +26,11 @@ export function PostsSection() {
 
   return (
     <section
-      className={`bottom-0 left-0 right-0 transition-all duration-300 ease-in-out transform px-4 lg:px-0 ${
+      className={`bottom-0 left-0 right-0 transition-all duration-300 ease-in-out transform px-4 lg:px-0 bg-black bg-opacity-10 max-w-[1300px] mx-auto rounded-xl ${
         isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
       }`}
     >
-      <div className="flex justify-between items-center p-4 bg-black bg-opacity-10 rounded-xl">
+      <div className="flex justify-between items-center p-4  rounded-xl">
         <h3 className="text-2xl text-center text-gray-400">Inlägg</h3>
         <button
           onClick={handleClear}
@@ -39,7 +39,7 @@ export function PostsSection() {
           Rensa
         </button>
       </div>
-      <div className="mx-auto">
+      <div className="mx-auto p-8">
         {selectedPosts?.map((post) => (
           <NewsCompetitionPost
             key={post.id}

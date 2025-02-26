@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto_Condensed } from "next/font/google";
-import "./globals.css";
 import Menu from "./components/shared/base-elements/Menu";
 import Footer from "./components/shared/base-elements/Footer";
 import { Providers } from "./components/Providers";
-import "./globals.css";
+import "./styles/globals.scss";
 import { ErrorBoundary } from "./components/error-bondaries/ErrorBoundary";
 import { ReduxProvider } from "@/providers/ReduxProvider";
 
@@ -33,7 +32,6 @@ export default function RootLayout({
               <Menu />
               <Providers>{children}</Providers>
             </div>
-            <Footer />
           </ReduxProvider>
         </ErrorBoundary>
       </body>

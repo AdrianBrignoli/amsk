@@ -1,0 +1,65 @@
+.calendar-header-gradient {
+  background: linear-gradient(to right, var(--brand-primary), var(--brand-secondary));
+}
+
+// Third-party calendar overrides
+.react-calendar {
+  // Navigation styling
+  &__navigation {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+
+    &__arrow {
+      color: white;
+      padding: 0 1.5em;
+    }
+
+    &__label {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  }
+
+  // Calendar grid styling
+  &__month-view__weekdays__weekday {
+    text-align: center;
+    margin: 1em 0;
+    color: white;
+    opacity: 0.8;
+  }
+
+  &__tile {
+    padding: 0.4em;
+    color: white;
+    
+    &:enabled:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+    }
+  }
+}
+
+// Complex state styles for calendar tiles
+.calendar-tile {
+  &--news {
+    background-color: var(--brand-primary);
+    font-weight: bold;
+  }
+
+  &--competition {
+    background-color: var(--brand-secondary);
+    font-weight: bold;
+  }
+
+  &--combined {
+    background: linear-gradient(
+      to right,
+      var(--brand-primary),
+      var(--brand-primary) 40%,
+      var(--brand-secondary) 60%,
+      var(--brand-secondary)
+    );
+    font-weight: bold;
+  }
+} 

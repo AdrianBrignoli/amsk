@@ -24,9 +24,9 @@ export default function Menu() {
 
   const menuItemStyle = `
     h-20 flex items-center justify-center text-center
-    min-w-[150px]
+    min-w-[8em]
     px-8 
-    text-md sm:text-xl
+    text-xl sm:text-sm
     transition-all duration-300 ease-in-out
     group
     relative after:content-[''] after:absolute after:w-0 after:h-[2px] 

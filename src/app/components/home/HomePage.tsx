@@ -1,19 +1,17 @@
-import CalendarSection from "./CalendarSection";
-import { PostsSection } from "./PostsSection";
-import HeaderSection from "../shared/HeaderSection";
+import WelcomeScreen from "./WelcomeScreen";
+import ContentSection from "./ContentSection";
 
 export function HomePage() {
   return (
-    <main className="flex-1 flex flex-col">
-      <HeaderSection
-        hone="Hej och varmt välkommen till Arlanda Märsta SK."
-        htwo="Den lilla men varma och hjärtliga skidklubben i Sigtuna kommun."
-      />
+    <>
+      {/* This div creates scrollable height without showing content */}
+      <div className="h-[120vh]" />
 
-      <section className="page-container">
-        <CalendarSection />
-        <PostsSection />
-      </section>
-    </main>
+      {/* Fixed container for our stacked sections */}
+      <main className="fixed inset-0 w-full h-screen">
+        <WelcomeScreen />
+        <ContentSection />
+      </main>
+    </>
   );
 }
