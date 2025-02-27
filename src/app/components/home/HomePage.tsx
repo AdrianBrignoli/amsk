@@ -1,3 +1,5 @@
+"use client";
+
 import WelcomeScreen from "./WelcomeScreen";
 import ContentSection from "./ContentSection";
 

@@ -1,22 +1,29 @@
 "use client";
 import { SlArrowDown } from "react-icons/sl";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export default function WelcomeScreen() {
   const { scrollY } = useScroll();
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+  }, []);
+
   // Instant fade for scroll indicator
   const scrollIndicatorOpacity = useTransform(scrollY, [0, 1], [1, 0]);
 
   // Main content fades and moves more slowly
   const mainContentOpacity = useTransform(
     scrollY,
-    [0, window.innerHeight * 0.3],
+    [0, windowHeight * 0.3],
     [1, 0]
   );
   const mainContentY = useTransform(
     scrollY,
-    [0, window.innerHeight * 0.4],
-    [0, -window.innerHeight * 1.5]
+    [0, windowHeight * 0.4],
+    [0, -windowHeight * 1.5]
   );
 
   return (
