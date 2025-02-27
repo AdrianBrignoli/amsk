@@ -33,6 +33,7 @@ export default function RootLayout({
               <Providers>{children}</Providers>
             </div>
           </ReduxProvider>
+          <Footer />
         </ErrorBoundary>
       </body>
     </html>
