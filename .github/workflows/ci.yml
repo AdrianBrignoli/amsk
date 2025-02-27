@@ -37,6 +37,19 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Debug - Check ENV
+        run: |
+          if [ ! -z "$CONTENTFUL_SPACE_ID" ]; then
+            echo "CONTENTFUL_SPACE_ID is set"
+          else
+            echo "CONTENTFUL_SPACE_ID is not set"
+          fi
+          if [ ! -z "$CONTENTFUL_ACCESS_TOKEN" ]; then
+            echo "CONTENTFUL_ACCESS_TOKEN is set"
+          else
+            echo "CONTENTFUL_ACCESS_TOKEN is not set"
+          fi
+
       - name: Build
         run: npm run build
         env:
