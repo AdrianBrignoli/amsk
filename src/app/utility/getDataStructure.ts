@@ -6,8 +6,10 @@ import {
   ArrangemangPost,
   TraningsverksamhetPost,
   AssociationPost,
+  AboutPost,
   GetDataStructureReturn,
 } from '@/app/definitions/types';
+import { Document } from '@contentful/rich-text-types';
 
 export const getDataStructure = (
   mode: string,
@@ -40,21 +42,15 @@ export const getDataStructure = (
         phone: item.fields.phone as string | null,
         content: item.fields.content as Document | null,
       })) as ContactPost[];
-    case 'arrangemang':
+    case 'aboutUs':
       return result.items.map((item: any) => ({
         id: item.sys.id as string,
-        content: item.fields.content as Document | null,
-      })) as ArrangemangPost[];
-    case 'traningsverksamhet':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        content: item.fields.content as Document | null,
-      })) as TraningsverksamhetPost[];
-    case 'contentText':
-      return result.items.map((item: any) => ({
-        id: item.sys.id as string,
-        content: item.fields.content as Document | null,
-      })) as AssociationPost[];
+        introduction: item.fields.introduction as Document | null,
+        firstSection: item.fields.firstSection as Document | null,
+        secondSection: item.fields.secondSection as Document | null,
+        thirdSection: item.fields.thirdSection as Document | null,
+        finalSection: item.fields.finalSection as Document | null,
+      })) as AboutPost[];
     default:
       return [];
   }

@@ -1,0 +1,39 @@
+.menu {
+  @apply text-lg w-5/6 h-full flex flex-row justify-end transition-[left];
+}
+
+.menuDesktop {
+  @apply block;
+}
+
+.menuMobile {
+  @apply hidden;
+}
+
+.menuItems {
+  @apply transform transition-transform duration-300 ease-in-out;
+}
+
+.menuItemsShow {
+  @apply translate-x-0;
+}
+
+@media screen and (max-width: 640px) {
+  .menuDesktop {
+    @apply hidden;
+  }
+
+  .menuMobile {
+    @apply flex flex-row justify-between;
+  }
+
+  .menuItems {
+    @apply -translate-x-full;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .menu {
+    @apply flex-col justify-start fixed w-72 h-full -left-96 top-0 -z-40 bg-black pt-20;
+  }
+}

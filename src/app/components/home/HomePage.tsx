@@ -2,18 +2,26 @@
 
 import WelcomeScreen from "./WelcomeScreen";
 import ContentSection from "./ContentSection";
+import Footer from "../shared/base-elements/Footer";
+import { PostsSection } from "./PostsSection";
 
 export function HomePage() {
   return (
     <>
-      {/* This div creates scrollable height without showing content */}
-      <div className="h-[120vh]" />
+      <div className="h-screen snap-y snap-mandatory overflow-y-scroll">
+        <div className="h-screen w-full snap-start overflow-hidden">
+          <WelcomeScreen />
+        </div>
 
-      {/* Fixed container for our stacked sections */}
-      <main className="fixed inset-0 w-full h-screen">
-        <WelcomeScreen />
-        <ContentSection />
-      </main>
+        <div className="h-screen w-full snap-start overflow-hidden">
+          <ContentSection />
+        </div>
+
+        <div className="w-full snap-start overflow-hidden">
+          <Footer />
+        </div>
+      </div>
+      <PostsSection />
     </>
   );
 }

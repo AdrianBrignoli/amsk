@@ -1,27 +1,21 @@
 "use client";
-import { CompetitionPost, NewsPost } from "@/app/definitions/types";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchContentfulPosts } from "@/app/actions/actions";
+import { appendPosts, setIsLoadingMore } from "@/store/slices/postsSlice";
+import { RootState } from "@/store";
+import { NewsPost, CompetitionPost } from "@/app/definitions/types";
 
 type LoadMoreProps = {
-  setPosts: React.Dispatch<
-    React.SetStateAction<(NewsPost | CompetitionPost)[] | []>
-  >;
-  posts: (NewsPost | CompetitionPost)[] | [];
   input: "Nyheter" | "Tävlingar";
-  setIsLoadingMore: React.Dispatch<React.SetStateAction<boolean>>;
+  posts: any[];
 };
 
-export default function LoadMore({
-  input,
-  setPosts,
-  posts,
-  setIsLoadingMore,
-}: LoadMoreProps) {
-  const [hasMore, setHasMore] = useState(true);
+export default function LoadMore({ input, posts }: LoadMoreProps) {
+  const dispatch = useDispatch();
+  const { hasMore } = useSelector((state: RootState) => state.posts);
 
-  const loadMore = async () => {
-    setIsLoadingMore(true);
+  const handleLoadMore = async () => {
+    dispatch(setIsLoadingMore(true));
     try {
       const result = await fetchContentfulPosts({
         contentType: input === "Nyheter" ? "news" : "competition",
@@ -29,19 +23,16 @@ export default function LoadMore({
         skip: posts.length,
       });
 
-      setPosts((prev) => [
-        ...prev,
-        ...(result.items as (CompetitionPost | NewsPost)[]),
-      ]);
-
-      // Hide button if we've loaded all posts
-      if (posts.length + result.items.length >= result.total) {
-        setHasMore(false);
-      }
+      dispatch(
+        appendPosts({
+          items: result.items as (NewsPost | CompetitionPost)[],
+          total: result.total,
+        })
+      );
     } catch (error) {
-      console.error(error);
+      console.error("Error loading more posts:", error);
     } finally {
-      setIsLoadingMore(false);
+      dispatch(setIsLoadingMore(false));
     }
   };
 
@@ -49,8 +40,8 @@ export default function LoadMore({
 
   return (
     <button
-      onClick={loadMore}
-      className="bg-sky-500 bg-opacity-50 hover:bg-opacity-70 text-gray-300 p-4 rounded-md mt-4 mx-auto my-8 w-full max-w-xl "
+      onClick={handleLoadMore}
+      className="bg-sky-500 bg-opacity-50 hover:bg-opacity-70 text-gray-300 p-4 rounded-md mt-4 mx-auto my-8 w-full max-w-xl"
     >
       Ladda fler
     </button>

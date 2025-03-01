@@ -47,6 +47,15 @@ export type AssociationPost = {
   content: Document | null;
 };
 
+export type AboutPost = {
+  id: string;
+  introduction: Document | null;
+  firstSection: Document | null;
+  secondSection: Document | null;
+  thirdSection: Document | null;
+  finalSection: Document | null;
+};
+
 // Union used by fetchContentfulPosts
 export type GetDataStructureReturn =
   | CompetitionPost[]
@@ -55,7 +64,8 @@ export type GetDataStructureReturn =
   | ContactPost[]
   | ArrangemangPost[]
   | TraningsverksamhetPost[]
-  | AssociationPost[];
+  | AssociationPost[]
+  | AboutPost[];
 
 // ------------- End
 

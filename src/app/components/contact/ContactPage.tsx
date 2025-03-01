@@ -14,7 +14,6 @@ export function ContactPage({ data }: ContactPageProps) {
       <HeaderSection hone="Kontakt" htwo="Här kan du hitta kontaktuppgifter" />
 
       <ContentLayout
-        title="Kontaktuppgifter"
         description="Här ser du kontaktuppgifter till olika personer som du kan kontakta
                 om du har frågor eller liknande. Vi hjälper gärna till med att få
                 ordning på förvirringen."

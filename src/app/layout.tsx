@@ -3,7 +3,7 @@ import { Roboto_Condensed } from "next/font/google";
 import Menu from "./components/shared/base-elements/Menu";
 import Footer from "./components/shared/base-elements/Footer";
 import { Providers } from "./components/Providers";
-import "./styles/globals.scss";
+import "./styles/globals.css";
 import { ErrorBoundary } from "./components/error-bondaries/ErrorBoundary";
 import { ReduxProvider } from "@/providers/ReduxProvider";
 
@@ -33,7 +33,6 @@ export default function RootLayout({
               <Providers>{children}</Providers>
             </div>
           </ReduxProvider>
-          <Footer />
         </ErrorBoundary>
       </body>
     </html>

@@ -14,31 +14,16 @@ export default function WelcomeScreen() {
   // Instant fade for scroll indicator
   const scrollIndicatorOpacity = useTransform(scrollY, [0, 1], [1, 0]);
 
-  // Main content fades and moves more slowly
-  const mainContentOpacity = useTransform(
-    scrollY,
-    [0, windowHeight * 0.3],
-    [1, 0]
-  );
-  const mainContentY = useTransform(
-    scrollY,
-    [0, windowHeight * 0.4],
-    [0, -windowHeight * 1.5]
-  );
-
   return (
-    <div className="relative h-screen text-center">
-      <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center space-y-4"
-        style={{ opacity: mainContentOpacity, y: mainContentY }}
-      >
+    <div className="relative h-full flex items-center justify-center overflow-hidden">
+      <div className="text-center space-y-4 overflow-hidden">
         <h1 className="text-4xl font-bold">
           Hej och varmt välkommen till Arlanda Märsta SK.
         </h1>
         <p className="text-2xl text-gray-400">
           Den lilla men varma och hjärtliga skidklubben i Sigtuna kommun.
         </p>
-      </motion.div>
+      </div>
       <motion.div
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center transition-opacity duration-300"
         style={{ opacity: scrollIndicatorOpacity }}

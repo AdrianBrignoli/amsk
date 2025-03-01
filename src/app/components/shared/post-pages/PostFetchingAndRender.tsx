@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import { NewsPost, CompetitionPost } from "@/app/definitions/types";
 import LoadMore from "./LoadMore";
 import FilterOnName from "./FilterOnName";
 import PostHandler from "./PostHandler";
 import { RenderManySkeletons } from "../../skeleton/PostsSkeleton";
+import { useInitializePosts } from "./hooks/useInitializePosts";
 
 type PostFetchingAndRenderProps = {
   initialPosts: (NewsPost | CompetitionPost)[] | [];
@@ -16,32 +18,25 @@ export default function PostFetchingAndRender({
   initialPosts,
   postType,
 }: PostFetchingAndRenderProps) {
-  const [posts, setPosts] = useState<(NewsPost | CompetitionPost)[] | []>([]);
-  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-  const [isSearching, setIsSearching] = useState(false);
+  const { posts, isLoadingMore, isSearching, total } = useSelector(
+    (state: RootState) => state.posts
+  );
 
-  useEffect(() => {
-    setPosts(initialPosts);
-  }, [initialPosts]);
+  useInitializePosts(initialPosts, postType);
+
+  // Calculate how many posts are remaining to be loaded
+  const remainingPosts = Math.min(3, total - posts.length);
 
   return (
     <>
-      <FilterOnName
-        setPosts={setPosts}
-        postType={postType}
-        currentPosts={posts}
-        onSearchStateChange={setIsSearching}
-      />
-      <section className="flex-1 flex flex-col justify-between w-full max-w-[1300px] mx-auto xl:px-0 px-4">
+      <FilterOnName postType={postType} />
+      <section className="main-content">
         <PostHandler posts={posts} postType={postType} />
-        {isLoadingMore && <RenderManySkeletons />}
+        {isLoadingMore && remainingPosts > 0 && (
+          <RenderManySkeletons count={remainingPosts} />
+        )}
         {posts.length > 0 && !isSearching && (
-          <LoadMore
-            input={postType}
-            setPosts={setPosts}
-            posts={posts}
-            setIsLoadingMore={setIsLoadingMore}
-          />
+          <LoadMore input={postType} posts={posts} />
         )}
       </section>
     </>

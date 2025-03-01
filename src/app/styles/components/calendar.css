@@ -1,0 +1,114 @@
+/* Base calendar styles */
+.react-calendar {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: white;
+}
+
+/* Navigation */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.react-calendar__navigation button {
+  color: white;
+  padding: 0.5rem 1.5rem;
+  transition: opacity 0.2s;
+}
+
+.react-calendar__navigation button:hover {
+  opacity: 0.8;
+}
+
+.react-calendar__navigation__label {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+/* Month view */
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 1rem 0;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+/* Day tiles */
+.react-calendar__tile {
+  padding: 0.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.react-calendar__tile--now {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.react-calendar__tile--active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.react-calendar__tile:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Custom post type styles */
+.calendar-tile-news {
+  background-color: var(--brand-primary);
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+
+.calendar-tile-news:hover {
+  opacity: 0.9;
+}
+
+.calendar-tile-competition {
+  background-color: var(--brand-secondary);
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+
+.calendar-tile-competition:hover {
+  opacity: 0.9;
+}
+
+.calendar-tile-combined {
+  background: linear-gradient(
+    to right,
+    var(--brand-primary),
+    var(--brand-primary) 40%,
+    var(--brand-secondary) 60%,
+    var(--brand-secondary)
+  );
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+
+.calendar-tile-combined:hover {
+  opacity: 0.9;
+}

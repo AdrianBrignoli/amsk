@@ -4,15 +4,15 @@ export const getTileClassName = (
   date: Date,
   newsDates: string[],
   competitionDates: string[]
-): string => {
-  const dateStr = date.toISOString().split('T')[0];
-  const hasNews = newsDates.some(d => d.split('T')[0] === dateStr);
-  const hasCompetition = competitionDates.some(d => d.split('T')[0] === dateStr);
+): string | undefined => {
+  const dateStr = date.toISOString().split("T")[0];
+  const hasNews = newsDates.includes(dateStr);
+  const hasCompetition = competitionDates.includes(dateStr);
 
-  if (hasNews && hasCompetition) return 'calendar-tile--combined';
-  if (hasNews) return 'calendar-tile--news';
-  if (hasCompetition) return 'calendar-tile--competition';
-  return '';
+  if (hasNews && hasCompetition) return "combined";
+  if (hasNews) return "news";
+  if (hasCompetition) return "competition";
+  return undefined;
 };
 
 export const hasPostsForDate = (

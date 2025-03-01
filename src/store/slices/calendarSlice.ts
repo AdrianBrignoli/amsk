@@ -9,6 +9,9 @@ interface CalendarState {
   newsPostsData: NewsPost[];
   competitionPostData: CompetitionPost[];
   selectedPosts: (NewsPost | CompetitionPost)[];
+  currentPosts: (NewsPost | CompetitionPost)[];
+  isSearching: boolean;
+  searchTerm: string;
 }
 
 const initialState: CalendarState = {
@@ -19,14 +22,19 @@ const initialState: CalendarState = {
   newsPostsData: [],
   competitionPostData: [],
   selectedPosts: [],
+  currentPosts: [],
+  isSearching: false,
+  searchTerm: '',
 };
 
 export const calendarSlice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
-    setDate: (state, action: PayloadAction<Value>) => {
-      if (Array.isArray(action.payload)) {
+    setDate: (state, action: PayloadAction<string | Value>) => {
+      if (typeof action.payload === 'string') {
+        state.date = action.payload;
+      } else if (Array.isArray(action.payload)) {
         state.date = action.payload[0]?.toISOString() || new Date().toISOString();
       } else if (action.payload instanceof Date) {
         state.date = action.payload.toISOString();
@@ -57,8 +65,27 @@ export const calendarSlice = createSlice({
     clearSelectedPosts: (state) => {
       state.selectedPosts = [];
     },
+    setCurrentPosts: (state, action: PayloadAction<(NewsPost | CompetitionPost)[]>) => {
+      state.currentPosts = action.payload;
+    },
+    setIsSearching: (state, action: PayloadAction<boolean>) => {
+      state.isSearching = action.payload;
+    },
+    setSearchTerm: (state, action: PayloadAction<string>) => {
+      state.searchTerm = action.payload;
+    },
   },
 });
 
-export const { setDate, setLoading, setPostDates, setSelectedPosts, clearSelectedPosts } = calendarSlice.actions;
+export const { 
+  setDate, 
+  setLoading, 
+  setPostDates, 
+  setSelectedPosts, 
+  clearSelectedPosts,
+  setCurrentPosts,
+  setIsSearching,
+  setSearchTerm
+} = calendarSlice.actions;
+
 export default calendarSlice.reducer; 

@@ -4,6 +4,7 @@ import NewsCompetitionPost from "../posts/news-compeition/NewsCompetitionPost";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { clearSelectedPosts } from "@/store/slices/calendarSlice";
+import { IoClose } from "react-icons/io5";
 
 export function PostsSection() {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ export function PostsSection() {
   const selectedPosts = useSelector(
     (state: RootState) => state.calendar.selectedPosts
   );
+  const selectedDate = useSelector((state: RootState) => state.calendar.date);
 
   useEffect(() => {
     if (selectedPosts.length) {
@@ -20,34 +22,49 @@ export function PostsSection() {
     }
   }, [selectedPosts.length]);
 
-  const handleClear = () => {
+  const handleClose = () => {
     dispatch(clearSelectedPosts());
   };
 
+  if (!isVisible) return null;
+
+  // Format the date in Swedish locale
+  const formattedDate = new Date(selectedDate).toLocaleDateString("sv-SE", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
-    <section
-      className={`bottom-0 left-0 right-0 transition-all duration-300 ease-in-out transform px-4 lg:px-0 bg-black bg-opacity-10 max-w-[1300px] mx-auto rounded-xl ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
-      }`}
-    >
-      <div className="flex justify-between items-center p-4  rounded-xl">
-        <h3 className="text-2xl text-center text-gray-400">Inlägg</h3>
-        <button
-          onClick={handleClear}
-          className="text-gray-white bg-gray-500 text-lg p-4 min-w-24 rounded-xl hover:bg-gray-600 transition-colors"
-        >
-          Rensa
-        </button>
-      </div>
-      <div className="mx-auto p-8">
-        {selectedPosts?.map((post) => (
-          <NewsCompetitionPost
-            key={post.id}
-            post={post}
-            postType={post.postType}
-          />
-        ))}
-      </div>
-    </section>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      <section
+        className={`relative w-full max-w-[900px] max-h-[80vh] overflow-y-auto bg-gray-900/90 rounded-xl shadow-2xl transition-all duration-300 ease-in-out transform ${
+          isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        }`}
+      >
+        <div className="sticky top-0 z-10 flex flex-col p-4 rounded-t-xl bg-black/40 backdrop-blur-sm border-b border-gray-800">
+          <div className="flex justify-between items-center">
+            <h3 className="text-2xl text-center text-gray-400">Inlägg</h3>
+            <button
+              onClick={handleClose}
+              className="text-gray-400 hover:text-white p-2 rounded-lg transition-colors"
+              aria-label="Stäng"
+            >
+              <IoClose className="text-2xl" />
+            </button>
+          </div>
+          <p className="text-gray-500 text-sm mt-1">{formattedDate}</p>
+        </div>
+        <div className="p-6 space-y-4">
+          {selectedPosts?.map((post) => (
+            <NewsCompetitionPost
+              key={post.id}
+              post={post}
+              postType={post.postType}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

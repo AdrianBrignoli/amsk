@@ -13,3 +13,5 @@ export const POST_TYPES = {
   NEWS: 'Nyheter',
   COMPETITION: 'Tävlingar',
 } as const;
+
+export const REVALIDATE_TIME = 3600;

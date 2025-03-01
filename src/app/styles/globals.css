@@ -1,0 +1,228 @@
+/* Tailwind Directives */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Import modular styles */
+@import "./animations.css";
+@import "./utilities.css";
+@import "./components/menu.css";
+@import "./components/layout.css";
+
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Lusitana&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+/* CSS Variables */
+:root {
+  --brand-primary: #2c3093;
+  --brand-secondary: #ea5661;
+  --brand-primary-10: rgba(44, 48, 147, 0.1);
+  --brand-primary-20: rgba(44, 48, 147, 0.2);
+  --brand-primary-50: rgba(44, 48, 147, 0.5);
+  --brand-secondary-10: rgba(234, 86, 97, 0.1);
+  --brand-secondary-20: rgba(234, 86, 97, 0.2);
+  --brand-secondary-50: rgba(234, 86, 97, 0.5);
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+/* Typography */
+@layer base {
+  h1 {
+    @apply text-2xl font-bold;
+  }
+
+  h2 {
+    @apply text-xl font-bold;
+  }
+
+  h3 {
+    @apply text-lg font-bold;
+  }
+}
+
+/* Custom Scrollbar Styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+@layer components {
+  .marquee {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .marquee div {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 30s linear infinite;
+  }
+
+  .pulse-gradient {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.027),
+      rgba(255, 255, 255, 0.205),
+      rgba(0, 0, 0, 0.027)
+    );
+    background-size: 200% 100%;
+    animation: pulseGradient 2s ease-in-out infinite;
+  }
+
+  .menu-item {
+    @apply relative overflow-hidden;
+  }
+
+  .menu-item::before {
+    content: "";
+    @apply absolute bottom-0 mx-auto w-[5px] h-[5px] opacity-0 transition-all duration-300;
+  }
+
+  .menu-item:hover::before {
+    @apply w-4/5 opacity-50;
+  }
+
+  .spinner {
+    @apply w-5 h-5 rounded-full;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid #ffffff90;
+    animation: spin 1s linear infinite;
+  }
+
+  .film-grain {
+    @apply relative overflow-hidden;
+  }
+
+  .film-grain::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none opacity-90 z-[1];
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.02) 20%,
+      transparent 80%
+    );
+    animation: grain 8s steps(10) infinite;
+  }
+}
+
+/* Animations */
+@keyframes pulseGradient {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, -10px);
+  }
+}
+
+/* Media Queries */
+@media screen and (max-width: 640px) {
+  #menu-desktop {
+    @apply hidden;
+  }
+  #menu-mobile {
+    @apply flex flex-row justify-between;
+  }
+  #menu-items {
+    @apply -translate-x-full transition-transform duration-300 ease-in-out;
+  }
+  #menu-items.show {
+    @apply translate-x-0;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  #menu {
+    @apply flex flex-col justify-start fixed w-72 h-full -left-96 top-0 -z-40 bg-black pt-20;
+  }
+}
+
+/* Dark mode preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 243, 244, 246;
+    --background-end-rgb: 243, 244, 246;
+  }
+}
+
+/* Menu styles */
+#menu {
+  font-size: 1.125rem;
+  width: 83.333333%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  transition: left 0.3s ease;
+}

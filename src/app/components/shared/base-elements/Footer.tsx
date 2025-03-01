@@ -1,25 +1,17 @@
-import Link from 'next/link';
+"use client";
 
 export default function Footer() {
   return (
-    <div className="w-full bg-black text-white p-8">
-      <div className="flex justify-evenly">
-        <div className="flex flex-col">
-          <Link href="/asd">X_1</Link>
-          <Link href="/asd">X_2</Link>
-          <Link href="/asd">X_3</Link>
-        </div>
-        <div className="flex flex-col">
-          <Link href="/asd">X_1</Link>
-          <Link href="/asd">X_2</Link>
-          <Link href="/asd">X_3</Link>
-        </div>
-        <div className="flex flex-col">
-          <Link href="/asd">X_1</Link>
-          <Link href="/asd">X_2</Link>
-          <Link href="/asd">X_3</Link>
-        </div>
+    <footer className="w-full py-8 bg-gray-900">
+      <div className="text-center space-y-4">
+        <h2 className="text-2xl font-bold text-gray-100">Kontakta oss</h2>
+        <p className="text-gray-400">Email: info@amsk.se</p>
+        <p className="text-gray-400">Telefon: 08-123 45 67</p>
+        <p className="text-gray-400 mt-8">
+          © {new Date().getFullYear()} Arlanda Märsta SK. Alla rättigheter
+          förbehållna.
+        </p>
       </div>
-    </div>
+    </footer>
   );
 }

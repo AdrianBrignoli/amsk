@@ -1,17 +1,20 @@
 "use client";
 import { useEffect } from "react";
 import Calendar from "react-calendar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { NewsPost, CompetitionPost, ValuePiece } from "@/app/definitions/types";
 import { getTileClassName, hasPostsForDate, getPostsForDate } from "./utils";
 import { useCalendarFetch } from "./hooks/useCalendarFetch";
+import { setDate } from "@/store/slices/calendarSlice";
+import "@/app/styles/components/calendar.css";
 
 interface CalenderProps {
   onPostsUpdate: (posts: (NewsPost | CompetitionPost)[]) => void;
 }
 
 const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
+  const dispatch = useDispatch();
   const { fetchPosts } = useCalendarFetch();
   const {
     date,
@@ -22,10 +25,13 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
     competitionPostData,
   } = useSelector((state: RootState) => state.calendar);
 
-  const handleDayClick = (date: ValuePiece) => {
-    if (!date) return;
+  const handleDayClick = (clickedDate: ValuePiece) => {
+    if (!clickedDate || !(clickedDate instanceof Date)) return;
 
-    const dateStr = date.toISOString().split("T")[0];
+    // Convert the date to ISO string before dispatching
+    dispatch(setDate(clickedDate.toISOString()));
+
+    const dateStr = clickedDate.toISOString().split("T")[0];
     if (!hasPostsForDate(dateStr, newsDates, competitionDates)) return;
 
     const filteredPosts = getPostsForDate(
@@ -46,7 +52,7 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
     <div className="relative w-full">
       <div
         className="
-        h-[22em] 
+        h-[24em] 
         bg-black/40 
         backdrop-blur-sm 
         rounded-2xl 
@@ -62,12 +68,16 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
             activeStartDate && fetchPosts(activeStartDate)
           }
           onClickDay={handleDayClick}
-          value={date}
+          value={new Date(date)}
           locale="sv"
-          tileClassName={({ date }) =>
-            getTileClassName(date, newsDates, competitionDates)
-          }
-          className="w-full h-full"
+          tileClassName={({ date: tileDate }) => {
+            const customClass = getTileClassName(
+              tileDate,
+              newsDates,
+              competitionDates
+            );
+            return customClass ? `calendar-tile-${customClass}` : undefined;
+          }}
         />
       </div>
 

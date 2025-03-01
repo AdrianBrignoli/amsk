@@ -2,7 +2,7 @@ import { INITIAL_POSTS_LIMIT } from "@/app/definitions/constants";
 
 export default function PostsSkeleton() {
   return (
-    <section className="max-w-[1300px] w-full mx-auto flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component">
+    <section className=" flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50">
       <div className="flex flex-col space-y-4 py-4">
         <div className="flex align-center">
           <div className="w-6 h-6 bg-white bg-opacity-20 rounded-md"></div>
@@ -21,8 +21,16 @@ export default function PostsSkeleton() {
   );
 }
 
-export const RenderManySkeletons = () => {
-  return Array(INITIAL_POSTS_LIMIT)
-    .fill(0)
-    .map((_, index) => <PostsSkeleton key={index} />);
-};
+interface RenderManySkeletonsProps {
+  count?: number;
+}
+
+export function RenderManySkeletons({ count = 3 }: RenderManySkeletonsProps) {
+  return (
+    <>
+      {Array.from({ length: count }).map((_, index) => (
+        <PostsSkeleton key={index} />
+      ))}
+    </>
+  );
+}

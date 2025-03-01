@@ -1,54 +1,53 @@
 "use client";
-import { useState, useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
-import { CompetitionPost, NewsPost } from "@/app/definitions/types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 import { fetchContentfulPosts } from "@/app/actions/actions";
+import { NewsPost, CompetitionPost } from "@/app/definitions/types";
+import {
+  setSearchTerm,
+  setIsSearching,
+  setPosts,
+  setError,
+  setSavedState,
+} from "@/store/slices/postsSlice";
 
 type FilterOnNameProps = {
-  setPosts: React.Dispatch<
-    React.SetStateAction<(CompetitionPost | NewsPost)[] | []>
-  >;
   postType: "Nyheter" | "Tävlingar";
-  currentPosts: (CompetitionPost | NewsPost)[] | [];
-  onSearchStateChange: (isSearching: boolean) => void;
 };
 
-type SavedPostsState = {
-  posts: (CompetitionPost | NewsPost)[] | [];
-  count: number;
-};
-
-export default function FilterOnName({
-  setPosts,
-  postType,
-  currentPosts,
-  onSearchStateChange,
-}: FilterOnNameProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [savedState, setSavedState] = useState<SavedPostsState>({
-    posts: [],
-    count: 0,
-  });
+export default function FilterOnName({ postType }: FilterOnNameProps) {
+  const dispatch = useDispatch();
+  const { searchTerm, isSearching, error, posts, total } = useSelector(
+    (state: RootState) => state.posts
+  );
+  const savedState = useSelector((state: RootState) => state.posts.savedState);
 
   const validateSearchTerm = (term: string): boolean => {
     if (term.length > 50) {
-      setError("Söktermen är för lång");
+      dispatch(setError("Söktermen är för lång"));
       return false;
     }
-    setError(null);
+    dispatch(setError(null));
     return true;
   };
 
   const searchTermHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
-    setSearchTerm(term);
+    dispatch(setSearchTerm(term));
     if (validateSearchTerm(term)) {
       if (term === "") {
-        setIsSearching(false);
-        onSearchStateChange(false);
-        fetchOriginalPosts();
+        dispatch(setIsSearching(false));
+        if (savedState.posts.length > 0) {
+          dispatch(
+            setPosts({
+              items: savedState.posts,
+              total: savedState.count,
+            })
+          );
+        } else {
+          fetchOriginalPosts();
+        }
       }
     }
   };
@@ -57,30 +56,35 @@ export default function FilterOnName({
     try {
       const result = await fetchContentfulPosts({
         contentType: postType === "Nyheter" ? "news" : "competition",
-        limit: savedState.count || 3,
+        limit: posts.length || 3,
         skip: 0,
       });
 
-      setPosts(
-        postType === "Nyheter"
-          ? (result.items as NewsPost[])
-          : (result.items as CompetitionPost[])
+      dispatch(
+        setPosts({
+          items: result.items as (NewsPost | CompetitionPost)[],
+          total: result.total,
+        })
       );
     } catch (error) {
-      setError("Kunde inte återställa inläggen");
+      dispatch(setError("Kunde inte återställa inläggen"));
       console.error(error);
     }
   };
 
   const search = async () => {
     try {
-      setSavedState({
-        posts: currentPosts,
-        count: currentPosts.length,
-      });
+      // Only save state if we're not already searching
+      if (!isSearching) {
+        dispatch(
+          setSavedState({
+            posts: posts,
+            count: total,
+          })
+        );
+      }
 
-      setIsSearching(!!searchTerm);
-      onSearchStateChange(!!searchTerm);
+      dispatch(setIsSearching(!!searchTerm));
 
       const result = await fetchContentfulPosts({
         contentType: postType === "Nyheter" ? "news" : "competition",
@@ -93,13 +97,14 @@ export default function FilterOnName({
           : undefined,
       });
 
-      setPosts(
-        postType === "Nyheter"
-          ? (result.items as NewsPost[])
-          : (result.items as CompetitionPost[])
+      dispatch(
+        setPosts({
+          items: result.items as (NewsPost | CompetitionPost)[],
+          total: result.total,
+        })
       );
     } catch (error) {
-      setError("Kunde inte utföra sökningen");
+      dispatch(setError("Kunde inte utföra sökningen"));
       console.error(error);
     }
   };
@@ -142,7 +147,7 @@ export default function FilterOnName({
           ${isSearching ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}
         `}
       >
-        <div className="text-sm text-gray-400 text-center py-2 bg-black bg-opacity-30 w-full max-w-[1300px] mx-auto rounded-b-3xl">
+        <div className="text-sm text-gray-400 text-center py-2 bg-black bg-opacity-30 w-full max-w-[1300px] mx-auto rounded-b-0 sm:rounded-b-3xl">
           Sökresultat för: {searchTerm}
         </div>
       </div>
