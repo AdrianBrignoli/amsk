@@ -1,19 +1,16 @@
-"use client";
-import { useEffect } from "react";
-import Calendar from "react-calendar";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/store";
-import { NewsPost, CompetitionPost, ValuePiece } from "@/app/definitions/types";
-import { getTileClassName, hasPostsForDate, getPostsForDate } from "./utils";
-import { useCalendarFetch } from "./hooks/useCalendarFetch";
-import { setDate } from "@/store/slices/calendarSlice";
-import "@/app/styles/components/calendar.css";
+'use client';
+import { useEffect, memo } from 'react';
+import Calendar from 'react-calendar';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store';
+import { NewsPost, CompetitionPost, ValuePiece } from '@/app/definitions/types';
+import { getTileClassName, hasPostsForDate, getPostsForDate } from './utils';
+import { useCalendarFetch } from './hooks/useCalendarFetch';
+import { setDate } from '@/store/slices/calendarSlice';
+import { setSelectedPosts } from '@/store/slices/calendarSlice';
+import '@/app/styles/components/calendar.css';
 
-interface CalenderProps {
-  onPostsUpdate: (posts: (NewsPost | CompetitionPost)[]) => void;
-}
-
-const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
+export default memo(function Calender() {
   const dispatch = useDispatch();
   const { fetchPosts } = useCalendarFetch();
   const {
@@ -25,13 +22,16 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
     competitionPostData,
   } = useSelector((state: RootState) => state.calendar);
 
+  const handlePostsUpdate = (posts: (NewsPost | CompetitionPost)[]) => {
+    dispatch(setSelectedPosts(posts));
+  };
+
   const handleDayClick = (clickedDate: ValuePiece) => {
     if (!clickedDate || !(clickedDate instanceof Date)) return;
 
-    // Convert the date to ISO string before dispatching
     dispatch(setDate(clickedDate.toISOString()));
 
-    const dateStr = clickedDate.toISOString().split("T")[0];
+    const dateStr = clickedDate.toISOString().split('T')[0];
     if (!hasPostsForDate(dateStr, newsDates, competitionDates)) return;
 
     const filteredPosts = getPostsForDate(
@@ -39,14 +39,13 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
       newsPostsData,
       competitionPostData
     );
-    onPostsUpdate(filteredPosts);
+    handlePostsUpdate(filteredPosts);
   };
 
-  // Only run once on mount
   useEffect(() => {
     const initialDate = new Date();
     fetchPosts(initialDate);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative w-full">
@@ -88,6 +87,4 @@ const Calender: React.FC<CalenderProps> = ({ onPostsUpdate }) => {
       )}
     </div>
   );
-};
-
-export default Calender;
+});
