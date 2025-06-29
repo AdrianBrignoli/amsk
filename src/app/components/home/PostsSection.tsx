@@ -55,7 +55,7 @@ export function PostsSection() {
           </div>
           <p className="text-gray-500 text-sm mt-1">{formattedDate}</p>
         </div>
-        <div className="p-6 space-y-4">
+        <div className="flex flex-col space-y-2">
           {selectedPosts?.map((post) => (
             <NewsCompetitionPost
               key={post.id}

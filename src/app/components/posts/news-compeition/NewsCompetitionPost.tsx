@@ -43,7 +43,7 @@ export default function NewsCompetitionPost({ post, postType }: PostsProps) {
 
   return (
     <section
-      className="flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 news-component"
+      className="flex flex-col bg-black bg-opacity-30 text-white my-2 md:my-4 p-2 md:p-4 rounded-2xl relative hover:bg-opacity-50 news-component"
       style={{ borderLeft: `5px solid ${category.bgColor}` }}
     >
       <CategoryLabel label={category.label} bgColor={category.bgColor} />

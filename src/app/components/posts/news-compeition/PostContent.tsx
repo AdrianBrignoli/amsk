@@ -12,7 +12,7 @@ export const PostContent: FC<PostContentProps> = ({
   publishDate,
   content,
 }) => (
-  <div className="flex flex-col space-y-2 py-4">
+  <div className="flex flex-col space-y-1 md:space-y-2 ">
     <h3 className="flex align-center">
       <BiText className="mr-4" />
       {title || "Untitled"}
