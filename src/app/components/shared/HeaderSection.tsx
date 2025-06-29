@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import Image from "next/image";
+import { ReactNode } from 'react';
+import Image from 'next/image';
 
 interface HeaderTextProps {
   hone: string;
@@ -15,7 +15,7 @@ export default function HeaderSection({
   return (
     <>
       <section className="flex flex-col w-full relative">
-        <div className="flex flex-col justify-center text-white bg-black bg-opacity-50 px-6 py-14 mt-20 min-h-[16em]">
+        <div className="flex flex-col justify-center text-white bg-black bg-opacity-50 px-6 py-14 mt-16 min-h-[16em]">
           <div className="max-w-[1300px] mx-auto w-full">
             <div className="flex flex-col space-y-2">
               <p className="text-4xl break-words">{hone}</p>

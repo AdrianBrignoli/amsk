@@ -1,8 +1,8 @@
-import { INITIAL_POSTS_LIMIT } from "@/app/definitions/constants";
+import { INITIAL_POSTS_LIMIT } from '@/app/definitions/constants';
 
 export default function PostsSkeleton() {
   return (
-    <section className=" flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50">
+    <section className=" flex flex-col bg-black bg-opacity-30 text-white my-2 pl-6 p-4 rounded-2xl relative hover:bg-opacity-50 mx-auto">
       <div className="flex flex-col space-y-4 py-4">
         <div className="flex align-center">
           <div className="w-6 h-6 bg-white bg-opacity-20 rounded-md"></div>

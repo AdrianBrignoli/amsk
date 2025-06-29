@@ -1,8 +1,8 @@
-import HeaderSection from "@/app/components/shared/HeaderSection";
-import { ContentLayout } from "@/app/components/shared/ContentLayout";
-import LinksCont from "@/app/components/basics/LinksCont";
-import { LinkPost } from "@/app/definitions/types";
-import ErrorSmall from "../shared/error/ErrorSmall";
+import HeaderSection from '@/app/components/shared/HeaderSection';
+import { ContentLayout } from '@/app/components/shared/ContentLayout';
+import LinksCont from '@/app/components/basics/LinksCont';
+import { LinkPost } from '@/app/definitions/types';
+import ErrorSmall from '../shared/error/ErrorSmall';
 
 interface LinksPageProps {
   data: LinkPost[] | undefined;
@@ -11,7 +11,6 @@ interface LinksPageProps {
 export function LinksPage({ data }: LinksPageProps) {
   return (
     <section className="flex-1 flex flex-col text-white w-full">
-      <HeaderSection hone="Länkar" htwo="Här hittar du länkar" />
       {data ? (
         <ContentLayout
           title="Länkar"

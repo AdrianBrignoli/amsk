@@ -1,8 +1,8 @@
-import { AboutPost } from "@/app/definitions/types";
-import { BLOCKS } from "@contentful/rich-text-types";
-import { Document } from "@contentful/rich-text-types";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { SlArrowDown } from "react-icons/sl";
+import { AboutPost } from '@/app/definitions/types';
+import { BLOCKS } from '@contentful/rich-text-types';
+import { Document } from '@contentful/rich-text-types';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { SlArrowDown } from 'react-icons/sl';
 
 type AboutContentProps = {
   posts: AboutPost[];
@@ -55,7 +55,7 @@ export default function AboutContent({ posts }: AboutContentProps) {
         <div className="max-w-[800px] mx-auto">
           {renderSection(
             post.introduction,
-            "text-2xl text-gray-300 leading-relaxed"
+            'text-2xl text-gray-300 leading-relaxed'
           )}
         </div>
         <ScrollIndicator />
@@ -85,7 +85,7 @@ export default function AboutContent({ posts }: AboutContentProps) {
       {/* Final Section */}
       <section className="h-screen w-full snap-start relative flex items-center justify-center p-8">
         <div className="max-w-[800px] mx-auto">
-          {renderSection(post.finalSection, "text-xl text-gray-400 italic")}
+          {renderSection(post.finalSection, 'text-xl text-gray-400 italic')}
         </div>
       </section>
     </>
