@@ -31,10 +31,9 @@ export function generateStaticParams() {
 export default async function PostsPage({
   params,
 }: {
-  params: { postType: string };
+  params: Promise<{ postType: string }>;
 }) {
-  // Await the params before using
-  const postType = await params.postType;
+  const { postType } = await params;
   const config = pageConfigs[postType as keyof typeof pageConfigs];
 
   // Handle invalid routes
