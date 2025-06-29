@@ -27,7 +27,13 @@ export const fetchContentfulPosts = async ({
 }: contenfulFilterProps) => {
   try {
     const client = createContentfulClient();
-    if (!client) throw new Error('Failed to initialize Contentful client');
+    if (!client) {
+      console.error('Contentful client is null - check environment variables');
+      return {
+        items: [],
+        total: 0,
+      };
+    }
 
     const result = await client.getEntries({
       content_type: contentType,
@@ -43,7 +49,10 @@ export const fetchContentfulPosts = async ({
     };
   } catch (error) {
     console.error('Error fetching Contentful posts:', error);
-    throw new Error('Failed to fetch content');
+    return {
+      items: [],
+      total: 0,
+    };
   }
 };
 

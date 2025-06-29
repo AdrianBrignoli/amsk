@@ -4,22 +4,37 @@ import { CompetitionPost, NewsPost } from '@/app/definitions/types';
 import { GraphQLClient } from 'graphql-request';
 
 export const createContentfulClient = () => {
-  if (
-    process.env.CONTENTFUL_SPACE_ID === undefined ||
-    process.env.CONTENTFUL_ACCESS_TOKEN === undefined
-  )
-    return;
-  const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID,
-    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-  });
-
-  return client;
+  const spaceId = process.env.CONTENTFUL_SPACE_ID;
+  const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
+  
+  if (!spaceId || !accessToken) {
+    console.error('Contentful environment variables missing:', {
+      spaceId: spaceId ? 'set' : 'missing',
+      accessToken: accessToken ? 'set' : 'missing'
+    });
+    return null;
+  }
+  
+  try {
+    const client = createClient({
+      space: spaceId,
+      accessToken: accessToken,
+    });
+    return client;
+  } catch (error) {
+    console.error('Failed to create Contentful client:', error);
+    return null;
+  }
 };
 
 export const createGraphQLClient = () => {
   const spaceId = process.env.CONTENTFUL_SPACE_ID;
   const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
+  
+  if (!spaceId || !accessToken) {
+    throw new Error('Contentful environment variables missing');
+  }
+  
   const endpoint = `https://graphql.contentful.com/content/v1/spaces/${spaceId}`;
 
   return new GraphQLClient(endpoint, {
