@@ -119,8 +119,10 @@ export default function FilterOnName({ postType }: FilterOnNameProps) {
   return (
     <>
       <div className="w-full bg-sky-900 bg-opacity-20">
-        <section className="flex justify-between relative w-full max-w-[1300px] mx-auto rounded-b-3xl py-4 xl:px-0 px-4">
-          <h3 className="text-3xl font-thin">Inlägg</h3>
+        <section className="flex justify-between relative w-full max-w-[1300px] mx-auto rounded-b-3xl py-2 md:py-4 xl:px-0 px-4">
+          <p className="text-md md:text-xl my-auto font-thin">
+            Sök efter inlägg
+          </p>
           <div className="flex flex-col items-end">
             <div className="flex items-center">
               <input

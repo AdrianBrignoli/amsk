@@ -1,6 +1,6 @@
 /* Main content container */
 .main-content {
-  @apply flex-1 flex flex-col justify-between w-full max-w-[1300px] mx-auto xl:px-0 px-4;
+  @apply flex-1 flex flex-col justify-between w-full max-w-[1300px] mx-auto xl:px-0 px-2 md:px-4;
 }
 
 /* Section layouts */
