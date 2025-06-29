@@ -1,14 +1,14 @@
-'use client';
-import { useEffect, memo } from 'react';
-import Calendar from 'react-calendar';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store';
-import { NewsPost, CompetitionPost, ValuePiece } from '@/app/definitions/types';
-import { getTileClassName, hasPostsForDate, getPostsForDate } from './utils';
-import { useCalendarFetch } from './hooks/useCalendarFetch';
-import { setDate } from '@/store/slices/calendarSlice';
-import { setSelectedPosts } from '@/store/slices/calendarSlice';
-import '@/app/styles/components/calendar.css';
+"use client";
+import { useEffect, memo } from "react";
+import Calendar from "react-calendar";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/store";
+import { NewsPost, CompetitionPost, ValuePiece } from "@/app/definitions/types";
+import { getTileClassName, hasPostsForDate, getPostsForDate } from "./utils";
+import { useCalendarFetch } from "./hooks/useCalendarFetch";
+import { setDate } from "@/store/slices/calendarSlice";
+import { setSelectedPosts } from "@/store/slices/calendarSlice";
+import "@/app/styles/components/calendar.css";
 
 export default memo(function Calender() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default memo(function Calender() {
 
     dispatch(setDate(clickedDate.toISOString()));
 
-    const dateStr = clickedDate.toISOString().split('T')[0];
+    const dateStr = clickedDate.toISOString().split("T")[0];
     if (!hasPostsForDate(dateStr, newsDates, competitionDates)) return;
 
     const filteredPosts = getPostsForDate(
@@ -45,7 +45,7 @@ export default memo(function Calender() {
   useEffect(() => {
     const initialDate = new Date();
     fetchPosts(initialDate);
-  }, []);
+  }, [fetchPosts]);
 
   return (
     <div className="relative w-full">

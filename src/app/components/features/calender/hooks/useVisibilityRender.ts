@@ -23,7 +23,7 @@ export const useVisibilityRender = (
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [ref, threshold]);
 
   return isVisible;
 };
